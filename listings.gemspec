@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Listings::VERSION
   s.authors     = ["Brian J. Cardiff"]
   s.email       = ["bcardiff@gmail.com"]
-  s.homepage    = "http://github.com/manastech/listings "
+  s.homepage    = "http://github.com/manastech/listings"
   s.summary     = "Simple creation of listings in rails applications."
   s.description = "DSL to create listings for active-record models."
 
