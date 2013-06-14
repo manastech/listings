@@ -68,6 +68,10 @@ module Listings
         params.delete param_page
         view_context.url_for(params)
       end
+
+      def no_data_message
+        I18n.t 'listings.no_data', kind: self.model_class.model_name.human.downcase.pluralize
+      end
     end
   end
 
@@ -79,14 +83,16 @@ module Listings
     def param_scope; :scope; end
     def param_page; :page; end
 
-    def query_items(params)
+    def filter_items(params, items)
       self.page = params[param_page] || 1
       self.scope = scope_by_name(params[param_scope])
-
-      items = self.model_class
       items = scope.apply(items) unless scope.nil?
 
-      self.items = items.page(page).per(page_size)
+      items.page(page).per(page_size)
+    end
+
+    def query_items(params)
+      self.items = filter_items(params, self.model_class)
     end
 
     def scope_by_name(name)
@@ -116,7 +122,7 @@ module Listings
     end
 
     def human_name
-      name.capitalize
+      name.to_s.humanize
     end
 
     def is_default?

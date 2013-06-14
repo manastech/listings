@@ -1,8 +1,9 @@
 module Listings
   # = Helpers
   module ActionViewExtensions
-    def render_listing(key)
-      params_for_listing = {:listing => key}.merge(params).with_indifferent_access
+    def render_listing(key, options = {})
+      options.reverse_merge! :params => {}
+      params_for_listing = {:listing => key}.merge(params).merge(options[:params]).with_indifferent_access
       listing = prepare_listing(params_for_listing, self)
       render :partial => 'listings/index', :locals => { :listing => listing }
     end

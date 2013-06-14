@@ -1,0 +1,3 @@
+en:
+  listings:
+    no_data: "There is are no %{kind} data to display"

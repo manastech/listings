@@ -4,17 +4,22 @@
       %li{class: "#{'active' if listing.is_active_scope(scope)}"}
         = link_to scope.human_name, listing.url_for_scope(scope)
 
-%table.table.table-hover
-  %thead
-    - listing.columns.each do |col|
-      %th
-        = col.human_name
+- unless listing.items.empty?
+  %table.table.table-hover
+    %thead
+      - listing.columns.each do |col|
+        %th
+          = col.human_name
 
-  %tbody
-    - listing.items.each do |item|
-      %tr
-        - listing.columns.each do |col|
-          %td
-            = listing.value_for(col, item)
+    %tbody
+      - listing.items.each do |item|
+        %tr
+          - listing.columns.each do |col|
+            %td
+              = listing.value_for(col, item)
 
-= paginate listing.items, :theme => 'twitter-bootstrap'
+  = paginate listing.items, :theme => 'twitter-bootstrap'
+
+- else
+  .well
+    = listing.no_data_message
