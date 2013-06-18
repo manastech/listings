@@ -1,0 +1,7 @@
+- unless listing.scopes.empty?
+  %ul.nav.nav-pills
+    - listing.scopes.each do |scope|
+      %li{class: "#{'active' if listing.is_active_scope(scope)}"}
+        = link_to scope.human_name, listing.url_for_scope(scope), :remote => true
+
+= render 'listings/table_content', :listing => listing

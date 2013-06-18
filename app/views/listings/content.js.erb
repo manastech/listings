@@ -1,0 +1,1 @@
+jQuery("#<%=@listing.name%> .listings-table-content").html("<%= escape_javascript(render :partial => 'listings/table_content', :locals => { :listing => @listing }) %>")
