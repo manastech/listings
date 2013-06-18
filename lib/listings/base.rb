@@ -27,7 +27,7 @@ module Listings
         criteria = []
         values = []
         self.columns.select(&:searchable?).each do |col|
-          criteria << "#{col.name} like ?"
+          criteria << "#{model_class.table_name}.#{col.name} like ?"
           values << "%#{search}%"
         end
         items = items.where(criteria.join(' or '), *values)
