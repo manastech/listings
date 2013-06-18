@@ -1,3 +1,24 @@
+module Kaminari
+  module Helpers
+    class Tag
+
+      def self.listings=(val)
+        @@listings=val
+      end
+
+      # patch kaminari helpers
+      # passing options of mountable engino routes seems to not be working
+      def page_url_for(page)
+        @params.delete :page
+        params = {@param_name => page}.merge(@params).with_indifferent_access
+        params.delete :controller
+        params.delete :action
+        @@listings.listing_content_url(params)
+      end
+    end
+  end
+end
+
 module Listings
   module ConfigurationMethods
     extend ActiveSupport::Concern
@@ -60,13 +81,17 @@ module Listings
 
     included do
       def is_active_scope(scope)
+        puts "is_active_scope #{self.scope.name} == #{scope.name}"
         self.scope.name == scope.name
       end
 
       def url_for_scope(scope)
-        params = view_context.params.merge(param_scope => scope.name)
+        params = view_context.params.merge(param_scope => scope.name, :listing => self.name)
         params.delete param_page
-        view_context.url_for(params)
+        params.delete :controller
+        params.delete :action
+        params = params.with_indifferent_access
+        view_context.listings.listing_full_url(params)
       end
 
       def no_data_message
@@ -79,6 +104,11 @@ module Listings
     include Listings::ConfigurationMethods
     include Listings::ViewHelperMethods
     attr_accessor :view_context
+    attr_accessor :params
+
+    def name
+      self.class.name.underscore.sub(/_listing$/,'')
+    end
 
     def param_scope; :scope; end
     def param_page; :page; end
@@ -92,6 +122,7 @@ module Listings
     end
 
     def query_items(params)
+      @params = params
       self.items = filter_items(params, self.model_class)
     end
 

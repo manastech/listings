@@ -2,6 +2,10 @@ class PostsListing < Listings::Base
 
   model Post
 
+  scope :all, default: true
+  scope :even
+  scope :odd
+
   paginates_per 10
 
   column :id

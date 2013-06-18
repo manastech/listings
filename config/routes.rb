@@ -1,3 +1,4 @@
 Listings::Engine.routes.draw do
-  match 'listing/:listing' => 'listings#index'
+  get 'listing/:listing/full' => 'listings#full', as: :listing_full
+  get 'listing/:listing/content' => 'listings#content', as: :listing_content
 end
