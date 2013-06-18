@@ -14,18 +14,31 @@ module Listings
 
     def param_scope; :scope; end
     def param_page; :page; end
+    def param_search; :s; end
 
     def filter_items(params, items)
       self.page = params[param_page] || 1
       self.scope = scope_by_name(params[param_scope])
+      self.search = params[param_search]
+
       items = scope.apply(items) unless scope.nil?
+
+      if search.present? && self.searchable?
+        # TODO support multiple searchable columns
+        col = self.columns.find(&:searchable?)
+        items = items.where("#{col.name} like ?", "%#{search}%")
+      end
 
       items.page(page).per(page_size)
     end
 
     def query_items(params)
       @params = params
-      self.items = filter_items(params, self.model_class)
+      self.items = filter_items(self.scoped_params, self.model_class)
+    end
+
+    def scoped_params
+      @params.except(:listing, :controller, :action)
     end
 
     def scope_by_name(name)
@@ -36,6 +49,10 @@ module Listings
 
     def value_for(column, item)
       column.value_for(self, item)
+    end
+
+    def searchable?
+      self.columns.any? &:searchable?
     end
 
     def method_missing(m, *args, &block)

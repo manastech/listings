@@ -9,6 +9,7 @@ module Listings
       attr_accessor :page
       attr_accessor :scope
       attr_accessor :items
+      attr_accessor :search
 
       def page_size
         self.class.page_size
@@ -51,8 +52,8 @@ module Listings
         @columns ||= []
       end
 
-      def column(name = '', &proc)
-        columns << ColumnDescriptor.new(self, name, proc)
+      def column(name = '', props = {}, &proc)
+        columns << ColumnDescriptor.new(self, name, props, proc)
       end
 
     end
