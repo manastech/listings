@@ -1,3 +1,4 @@
 en:
   listings:
     no_data: "There is are no %{kind} data to display"
+    search_placeholder: "Search %{kind}"

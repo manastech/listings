@@ -10,6 +10,7 @@ class PostsListing < Listings::Base
 
   column :id
   column :title, searchable: true
+  column :author, searchable: true
   column do |post|
     link_to 'Editar', edit_post_path(post)
   end

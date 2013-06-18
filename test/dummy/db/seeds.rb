@@ -1,5 +1,5 @@
 
-(1..30).each do |sn|
-  Post.create! title: "post n-#{sn}"
+(1..100).each do |sn|
+  Post.create! title: "post n-#{sn}", author: "john-#{(sn % 4) + 1}"
 end
 

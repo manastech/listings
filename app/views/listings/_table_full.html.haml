@@ -8,6 +8,6 @@
         %form.form-search{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
           - listing.scoped_params.each do |key,value|
             %input{type: 'hidden', name: key, value: value}
-          %input.search-query{name: listing.param_search, value: listing.scoped_params[listing.param_search]}
+          %input.search-query{name: listing.param_search, value: listing.scoped_params[listing.param_search], placeholder: listing.search_placeholder}
 
 = render 'listings/table_content', :listing => listing

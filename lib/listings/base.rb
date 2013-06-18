@@ -24,9 +24,13 @@ module Listings
       items = scope.apply(items) unless scope.nil?
 
       if search.present? && self.searchable?
-        # TODO support multiple searchable columns
-        col = self.columns.find(&:searchable?)
-        items = items.where("#{col.name} like ?", "%#{search}%")
+        criteria = []
+        values = []
+        self.columns.select(&:searchable?).each do |col|
+          criteria << "#{col.name} like ?"
+          values << "%#{search}%"
+        end
+        items = items.where(criteria.join(' or '), *values)
       end
 
       items.page(page).per(page_size)

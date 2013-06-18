@@ -4,7 +4,6 @@ module Listings
 
     included do
       def is_active_scope(scope)
-        puts "is_active_scope #{self.scope.name} == #{scope.name}"
         self.scope.name == scope.name
       end
 
@@ -18,7 +17,15 @@ module Listings
       end
 
       def no_data_message
-        I18n.t 'listings.no_data', kind: self.model_class.model_name.human.downcase.pluralize
+        I18n.t 'listings.no_data', kind: kind
+      end
+
+      def search_placeholder
+        I18n.t 'listings.search_placeholder', kind: kind
+      end
+
+      def kind
+        model_class.model_name.human.downcase.pluralize
       end
     end
   end
