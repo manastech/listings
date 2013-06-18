@@ -4,6 +4,7 @@ require 'rails/all'
 
 Bundler.require(*Rails.groups)
 require "listings"
+require 'haml-rails'
 
 module Dummy
   class Application < Rails::Application
