@@ -4,7 +4,7 @@ class PostsListing < Listings::Base
 
   scope :all, default: true
   scope :even
-  scope :odd
+  scope 'Impares', :odd
 
   paginates_per 10
 

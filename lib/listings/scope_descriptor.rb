@@ -1,16 +1,19 @@
 module Listings
   class ScopeDescriptor
+    attr_accessor :human_name
     attr_accessor :name
 
-    def initialize(name, props = {})
-      props.reverse_merge! default: false
+    def initialize(*args)
+      @props = args.extract_options!
+      @props.reverse_merge! default: false
 
-      @name = name
-      @props = props
-    end
-
-    def human_name
-      name.to_s.humanize
+      if args.first.is_a? ::Symbol
+        @name = args.first
+        @human_name = @name.to_s.humanize
+      else
+        @name = args.second
+        @human_name = args.first
+      end
     end
 
     def is_default?

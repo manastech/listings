@@ -36,8 +36,8 @@ module Listings
         @page_size = val
       end
 
-      def scope(name, props = {})
-        scopes << ScopeDescriptor.new(name, props)
+      def scope(*args)
+        scopes << ScopeDescriptor.new(*args)
       end
 
       def scopes
