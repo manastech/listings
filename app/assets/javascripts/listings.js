@@ -16,3 +16,8 @@ $(function(){
     })
   });
 });
+
+function refreshListing(name) {
+  var url = $('#' + name).data('url');
+  $.get(url);
+}

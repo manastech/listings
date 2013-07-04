@@ -1,2 +1,2 @@
-.listing{id: listing.name}
+.listing{:id => listing.name, :'data-url' => listings.listing_full_path(listing.name) }
   = render 'listings/table_full', :listing => listing
