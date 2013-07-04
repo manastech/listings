@@ -9,6 +9,8 @@ module Listings
     end
 
     def prepare_listing(params, view_context)
+      params.delete :controller
+      params.delete :action
       
       Kaminari::Helpers::Tag.listings = view_context.listings
 

@@ -1,1 +1,2 @@
-jQuery("#<%=@listing.name%>.listing").html("<%= escape_javascript(render :partial => 'listings/table_full', :locals => { :listing => @listing }) %>")
+jQuery("#<%=@listing.name%>.listing").html("<%= escape_javascript(render :partial => 'listings/table_full', :locals => { :listing => @listing }) %>");
+jQuery("#<%=@listing.name%>.listing").data('url', "<%= raw @listing.url %>");

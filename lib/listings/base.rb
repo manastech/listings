@@ -62,6 +62,10 @@ module Listings
       self.columns.any? &:searchable?
     end
 
+    def url
+      view_context.listings.listing_full_path(self.name, self.params)
+    end
+
     def method_missing(m, *args, &block)
       delegated_to = view_context.respond_to?(m) ? view_context : view_context.main_app
       delegated_to.send(m, *args, block)
