@@ -5,6 +5,9 @@ module Listings
   class Base
     include Listings::ConfigurationMethods
     include Listings::ViewHelperMethods
+    include ERB::Util # html_escape methods are private in the view_context
+                      # so they need to be included in order to be available
+
     attr_accessor :view_context
     attr_accessor :params
 
