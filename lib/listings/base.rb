@@ -24,7 +24,7 @@ module Listings
       self.scope = scope_by_name(params[param_scope])
       self.search = params[param_search]
 
-      items = scope.apply(items) unless scope.nil?
+      items = scope.apply(self, items) unless scope.nil?
 
       if search.present? && self.searchable?
         criteria = []
