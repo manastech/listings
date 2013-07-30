@@ -33,8 +33,7 @@ module Listings
         else
           ls = ::DynamicBinding::LookupStack.new
           ls.push_instance context
-          args = ls.run_proc @params_lambda
-          items.send(name, args)
+          ls.run_proc @params_lambda, items
         end
       end
     end

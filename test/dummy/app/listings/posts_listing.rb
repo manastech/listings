@@ -5,7 +5,7 @@ class PostsListing < Listings::Base
   scope :all, default: true
   scope :even
   scope 'Impares', :odd
-  scope 'Mayores a', :greater_than, lambda { params[:gt_id] }
+  scope 'Mayores a', :greater_than, lambda { |items| items.greater_than(params[:gt_id]) }
 
   paginates_per 10
 
