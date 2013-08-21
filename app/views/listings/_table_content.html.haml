@@ -4,7 +4,7 @@
       %thead
         - listing.columns.each do |col|
           %th
-            = col.human_name
+            = col.human_name(listing)
 
       %tbody
         - listing.items.each do |item|

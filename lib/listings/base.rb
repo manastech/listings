@@ -41,7 +41,18 @@ module Listings
 
     def query_items(params)
       @params = params
-      self.items = filter_items(self.scoped_params, self.model_class)
+      items = self.model_class
+      @has_active_model_source = items.respond_to? :human_attribute_name
+
+      if items.is_a?(Array)
+        items = Kaminari.paginate_array(items)
+      end
+
+      self.items = filter_items(self.scoped_params, items)
+    end
+
+    def has_active_model_source?
+      @has_active_model_source
     end
 
     def scoped_params
@@ -59,7 +70,7 @@ module Listings
     end
 
     def searchable?
-      self.columns.any? &:searchable?
+      self.columns.any? { |col| col.searchable?(self) }
     end
 
     def url

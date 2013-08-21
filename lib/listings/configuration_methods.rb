@@ -19,10 +19,6 @@ module Listings
         self.class.scopes
       end
 
-      def model_class
-        self.class.model_class
-      end
-
       def columns
         self.class.columns
       end
@@ -30,7 +26,6 @@ module Listings
 
     module ClassMethods
       attr_accessor :page_size
-      attr_accessor :model_class
 
       def paginates_per(val)
         @page_size = val
@@ -44,8 +39,14 @@ module Listings
         @scopes ||= []
       end
 
-      def model(val)
-        @model_class = val
+      def model(model_class = nil, &proc)
+        if !model_class.nil?
+          self.send(:define_method, 'model_class') do
+            model_class
+          end
+        else
+          self.send(:define_method, 'model_class', &proc)
+        end
       end
 
       def columns

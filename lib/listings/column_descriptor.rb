@@ -12,25 +12,27 @@ module Listings
     def value_for(listing, model)
       if @proc
         listing.instance_exec model, &@proc
+      elsif model.is_a?(Hash)
+        model[name]
       else
         model.send(name)
       end
     end
 
-    def human_name
-      if is_model_column?
-        @listing_class.model_class.human_attribute_name(name)
+    def human_name(listing)
+      if is_model_column?(listing)
+        listing.model_class.human_attribute_name(name)
       else
         name
       end
     end
 
-    def searchable?
-      @props[:searchable] && is_model_column?
+    def searchable?(listing)
+      @props[:searchable] && is_model_column?(listing)
     end
 
-    def is_model_column?
-      name.is_a? Symbol
+    def is_model_column?(listing)
+      name.is_a?(Symbol) && listing.has_active_model_source?
     end
   end
 end
