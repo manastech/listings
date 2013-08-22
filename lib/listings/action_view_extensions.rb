@@ -8,15 +8,18 @@ module Listings
       render :partial => 'listings/listing', :locals => { :listing => listing }
     end
 
-    def prepare_listing(params, view_context)
+    def prepare_listing(params, view_context, paging = true)
       params.delete :controller
       params.delete :action
-      
+
       Kaminari::Helpers::Tag.listings = view_context.listings
 
       listing_class = "#{params[:listing]}_listing".classify.constantize
       listing_class.new.tap do |listing|
         listing.view_context = view_context
+        if !paging
+          listing.page_size = false
+        end
         listing.query_items(params)
       end
     end

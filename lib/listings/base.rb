@@ -1,5 +1,6 @@
 require 'listings/configuration_methods'
 require 'listings/view_helper_methods'
+require 'csv'
 
 module Listings
   class Base
@@ -10,6 +11,10 @@ module Listings
 
     attr_accessor :view_context
     attr_accessor :params
+
+    def initialize
+      @page_size = self.class.page_size
+    end
 
     def name
       self.class.name.underscore.sub(/_listing$/,'')
@@ -36,7 +41,11 @@ module Listings
         items = items.where(criteria.join(' or '), *values)
       end
 
-      items.page(page).per(page_size)
+      if page_size
+        items = items.page(page).per(page_size)
+      end
+
+      items
     end
 
     def query_items(params)
@@ -44,7 +53,7 @@ module Listings
       items = self.model_class
       @has_active_model_source = items.respond_to? :human_attribute_name
 
-      if items.is_a?(Array)
+      if items.is_a?(Array) && page_size
         items = Kaminari.paginate_array(items)
       end
 
@@ -75,6 +84,31 @@ module Listings
 
     def url
       view_context.listings.listing_full_path(self.name, self.params)
+    end
+
+
+    def to_array
+      data = []
+
+      data << self.columns.map { |c| c.human_name(self) }
+
+      self.items.each do |item|
+        row = []
+        self.columns.each do |col|
+          row << self.value_for(col, item)
+        end
+        data << row
+      end
+
+      data
+    end
+
+    def to_csv
+      CSV.generate do |csv|
+        self.to_array.each do |row|
+          csv << row
+        end
+      end
     end
 
     def method_missing(m, *args, &block)

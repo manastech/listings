@@ -11,4 +11,6 @@ class HashListing < Listings::Base
   column :self
   column :next
 
+  export :csv
+
 end

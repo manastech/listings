@@ -10,10 +10,7 @@ module Listings
       attr_accessor :scope
       attr_accessor :items
       attr_accessor :search
-
-      def page_size
-        self.class.page_size
-      end
+      attr_accessor :page_size
 
       def scopes
         self.class.scopes
@@ -21,6 +18,10 @@ module Listings
 
       def columns
         self.class.columns
+      end
+
+      def export_formats
+        self.class.export_formats
       end
     end
 
@@ -57,6 +58,15 @@ module Listings
         columns << ColumnDescriptor.new(self, name, props, proc)
       end
 
+      def export_formats
+        @export ||= []
+      end
+
+      def export(*formats)
+        formats.each do |f|
+          export_formats << f
+        end
+      end
     end
   end
 end

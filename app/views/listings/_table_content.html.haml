@@ -13,7 +13,18 @@
               %td
                 = listing.value_for(col, item)
 
-    = paginate listing.items, :remote => true, :theme => 'twitter-bootstrap', :params => listing.params, :remote => true
+    %ul.nav
+      %li.pull-left
+        = paginate listing.items, :remote => true, :theme => 'twitter-bootstrap', :params => listing.params, :remote => true
+      - unless listing.export_formats.empty?
+        %li.pull-right
+          %ul.inline
+            %li
+              = listing.export_message
+            - listing.export_formats.each do |format|
+              %li
+                = link_to format, listing.url_for_format(format)
+
 
   - else
     .well
