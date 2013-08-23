@@ -17,6 +17,7 @@ module Listings
 
       respond_to do |format|
         format.csv { send_data @listing.to_csv, filename: "#{params[:listing]}.csv" }
+        format.xls { render 'listings/export' }
       end
     end
 

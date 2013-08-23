@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <% @listing.columns.each do |col| %>
+          <Cell><Data ss:Type="String"><%= col.human_name(@listing) %></Data></Cell>
+        <% end %>
+      </Row>
+    <% @listing.items.each do |item| %>
+      <Row>
+        <% @listing.columns.each do |col| %>
+          <% @listing.value_for(col, item).tap do |value| %>
+            <Cell><Data ss:Type="<%= excel_type(value) %>"><%= value %></Data></Cell>
+          <% end %>
+        <% end %>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

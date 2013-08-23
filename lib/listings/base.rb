@@ -86,6 +86,9 @@ module Listings
       view_context.listings.listing_full_path(self.name, self.params)
     end
 
+    def format
+      (params[:format] || :html).to_sym
+    end
 
     def to_array
       data = []

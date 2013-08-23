@@ -10,7 +10,13 @@ class HashListing < Listings::Base
 
   column :self
   column :next
+  column 'dummy' do
+    'This is a string'
+  end
+  column 'format' do
+    format
+  end
 
-  export :csv
+  export :csv, :xls
 
 end
