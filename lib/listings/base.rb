@@ -34,7 +34,7 @@ module Listings
       if search.present? && self.searchable?
         criteria = []
         values = []
-        self.columns.select(&:searchable?).each do |col|
+        (self.columns.select {|c| c.searchable?(self)}).each do |col|
           criteria << "#{model_class.table_name}.#{col.name} like ?"
           values << "%#{search}%"
         end
@@ -43,6 +43,10 @@ module Listings
 
       if paginated?
         items = items.page(page).per(page_size)
+      end
+
+      if items.is_a?(Class)
+        items = items.all
       end
 
       items

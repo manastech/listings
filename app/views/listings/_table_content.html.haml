@@ -13,7 +13,7 @@
               %td
                 = listing.value_for(col, item)
 
-    %ul.nav
+    %ul.nav.clearfix
       - if listing.paginated?
         %li.pull-left
           = paginate listing.items, :remote => true, :theme => 'twitter-bootstrap', :params => listing.params, :remote => true
