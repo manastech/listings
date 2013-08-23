@@ -41,7 +41,7 @@ module Listings
         items = items.where(criteria.join(' or '), *values)
       end
 
-      if page_size
+      if paginated?
         items = items.page(page).per(page_size)
       end
 
@@ -53,7 +53,7 @@ module Listings
       items = self.model_class
       @has_active_model_source = items.respond_to? :human_attribute_name
 
-      if items.is_a?(Array) && page_size
+      if items.is_a?(Array) && paginated?
         items = Kaminari.paginate_array(items)
       end
 
@@ -62,6 +62,10 @@ module Listings
 
     def has_active_model_source?
       @has_active_model_source
+    end
+
+    def paginated?
+      self.page_size != :none
     end
 
     def scoped_params

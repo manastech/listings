@@ -15,7 +15,7 @@
       <Row>
         <% @listing.columns.each do |col| %>
           <% @listing.value_for(col, item).tap do |value| %>
-            <Cell><Data ss:Type="<%= excel_type(value) %>"><%= value %></Data></Cell>
+            <Cell><Data ss:Type="<%= excel_type(value) %>"><%= excel_value(value) %></Data></Cell>
           <% end %>
         <% end %>
       </Row>

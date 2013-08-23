@@ -7,7 +7,7 @@ module Kaminari
       end
 
       # patch kaminari helpers
-      # passing options of mountable engino routes seems to not be working
+      # passing options of mountable engine routes seems to not be working
       def page_url_for(page)
         @params.delete :page
         params = {@param_name => page}.merge(@params).with_indifferent_access

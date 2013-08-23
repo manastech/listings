@@ -14,8 +14,9 @@
                 = listing.value_for(col, item)
 
     %ul.nav
-      %li.pull-left
-        = paginate listing.items, :remote => true, :theme => 'twitter-bootstrap', :params => listing.params, :remote => true
+      - if listing.paginated?
+        %li.pull-left
+          = paginate listing.items, :remote => true, :theme => 'twitter-bootstrap', :params => listing.params, :remote => true
       - unless listing.export_formats.empty?
         %li.pull-right
           %ul.inline

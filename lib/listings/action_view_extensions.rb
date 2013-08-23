@@ -18,7 +18,7 @@ module Listings
       listing_class.new.tap do |listing|
         listing.view_context = view_context
         if !paging
-          listing.page_size = false
+          listing.page_size = :none
         end
         listing.query_items(params)
       end
