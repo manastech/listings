@@ -1,3 +1,4 @@
+#encoding: utf-8
 class HashListing < Listings::Base
 
   model do
@@ -12,6 +13,9 @@ class HashListing < Listings::Base
   column :next
   column 'dummy' do
     'This is a string'
+  end
+  column 'ugly chars' do
+    'ñáéíóú'
   end
   column 'format' do
     format
