@@ -24,5 +24,17 @@ module Listings
     def name
       @column_description.name
     end
+
+    def sortable?
+      self.is_model_column?
+    end
+
+    def sort
+      nil
+    end
+
+    def next_sort_direction
+      sort == 'asc' ? 'desc' : 'asc'
+    end
   end
 end

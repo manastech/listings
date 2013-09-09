@@ -1,0 +1,16 @@
+.sortable {
+  a {
+    color: inherit;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+  a:after {
+    content: '\2195';
+    color: #ccc;
+  }
+  a:hover:after {
+    content: '\2191';
+    color: inherit;
+  }
+}

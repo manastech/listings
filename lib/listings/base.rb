@@ -23,6 +23,8 @@ module Listings
     def param_scope; :scope; end
     def param_page; :page; end
     def param_search; :s; end
+    def param_sort_by; :sort_by; end
+    def param_sort_direction; :sort_d; end
 
     def filter_items(params, items)
       self.page = params[param_page] || 1
@@ -39,6 +41,10 @@ module Listings
           values << "%#{search}%"
         end
         items = items.where(criteria.join(' or '), *values)
+      end
+
+      if params.include?(param_sort_by)
+        items = items.order("#{params[param_sort_by]} #{params[param_sort_direction]}")
       end
 
       if paginated?

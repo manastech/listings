@@ -3,8 +3,11 @@
     %table.table.table-hover
       %thead
         - listing.columns.each do |col|
-          %th
-            = col.human_name
+          %th{'class' => "#{'sortable ' + (col.sort || '') if col.sortable?}" }
+            - if col.sortable?
+              = link_to col.human_name, listing.url_for_sort(col.name, col.next_sort_direction), remote: true
+            - else
+              = col.human_name
 
       %tbody
         - listing.items.each do |item|

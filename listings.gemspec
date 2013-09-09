@@ -18,6 +18,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.2.13"
   s.add_dependency 'haml-rails'
+  s.add_dependency 'sass-rails', '~> 3.2.3'
+
   s.add_dependency 'kaminari'
   s.add_dependency 'bootstrap-kaminari-views'
   # s.add_dependency "jquery-rails"

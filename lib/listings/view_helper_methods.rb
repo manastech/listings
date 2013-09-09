@@ -8,21 +8,23 @@ module Listings
       end
 
       def url_for_scope(scope)
-        params = view_context.params.merge(param_scope => scope.name, :listing => self.name)
-        params.delete param_page
-        params.delete :controller
-        params.delete :action
-        params = params.with_indifferent_access
-        view_context.listings.listing_full_url(params)
+        view_context.listings.listing_full_url build_params(param_scope => scope.name)
+      end
+
+      def url_for_sort(name, direction)
+        view_context.listings.listing_full_url build_params(param_sort_by => name, param_sort_direction => direction)
       end
 
       def url_for_format(format)
-        params = view_context.params.merge(:format => format, :listing => self.name)
-        params.delete param_page
-        params.delete :controller
-        params.delete :action
-        params = params.with_indifferent_access
-        view_context.listings.listing_export_url(params)
+        view_context.listings.listing_export_url build_params(:format => format)
+      end
+
+      def build_params(params)
+        res = view_context.params.merge(:listing => self.name).merge(params)
+        res.delete param_page
+        res.delete :controller
+        res.delete :action
+        res.with_indifferent_access
       end
 
       def no_data_message
