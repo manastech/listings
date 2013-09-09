@@ -4,14 +4,14 @@
       %thead
         - listing.columns.each do |col|
           %th
-            = col.human_name(listing)
+            = col.human_name
 
       %tbody
         - listing.items.each do |item|
           %tr
             - listing.columns.each do |col|
               %td
-                = listing.value_for(col, item)
+                = col.value_for(item)
 
     %ul.nav.clearfix
       - if listing.paginated?

@@ -34,7 +34,7 @@ module Listings
       if search.present? && self.searchable?
         criteria = []
         values = []
-        (self.columns.select {|c| c.searchable?(self)}).each do |col|
+        self.columns.select(&:searchable?).each do |col|
           criteria << "#{model_class.table_name}.#{col.name} like ?"
           values << "%#{search}%"
         end
@@ -87,7 +87,7 @@ module Listings
     end
 
     def searchable?
-      self.columns.any? { |col| col.searchable?(self) }
+      self.columns.any? &:searchable?
     end
 
     def url
@@ -101,12 +101,12 @@ module Listings
     def to_array
       data = []
 
-      data << self.columns.map { |c| c.human_name(self) }
+      data << self.columns.map { |c| c.human_name }
 
       self.items.each do |item|
         row = []
         self.columns.each do |col|
-          row << self.value_for(col, item)
+          row << col.value_for(item)
         end
         data << row
       end

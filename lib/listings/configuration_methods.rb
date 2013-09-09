@@ -1,5 +1,6 @@
 require 'listings/scope_descriptor'
 require 'listings/column_descriptor'
+require 'listings/column_view'
 
 module Listings
   module ConfigurationMethods
@@ -17,7 +18,9 @@ module Listings
       end
 
       def columns
-        self.class.columns
+        @columns ||= self.class.columns.map do |cd|
+          ColumnView.new(self, cd)
+        end
       end
 
       def export_formats
