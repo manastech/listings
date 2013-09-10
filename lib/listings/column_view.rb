@@ -26,15 +26,14 @@ module Listings
     end
 
     def sortable?
-      @column_description.sortable? && self.is_model_column?
+      @column_description.sortable? && (self.is_model_column? || @column_description.sortable_property_is_expression?)
     end
 
     def sort_by
-      s = @column_description.props[:sortable]
-      if (!!s == s)
-        name # s is Boolean (and by context should be true)
+      if @column_description.sortable_property_is_expression?
+        @column_description.props[:sortable]
       else
-        s # s is the expression
+        name
       end
     end
 

@@ -34,11 +34,16 @@ module Listings
 
     def sortable?
       s = @props[:sortable]
-      if !!s == s
-        s # s is Boolean
-      else
+      if sortable_property_is_expression?
         true # s is the expression that should be used for sorting
+      else
+        s # s is Boolean
       end
+    end
+
+    def sortable_property_is_expression?
+      s = @props[:sortable]
+      !(!!s == s)
     end
 
     def is_model_column?(listing)
