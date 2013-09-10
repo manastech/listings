@@ -1,11 +1,12 @@
 module Listings
   class ColumnDescriptor
     attr_reader :name
+    attr_reader :props
 
     def initialize(listing_class, name, props = {}, proc)
       @listing_class = listing_class
       @name = name
-      @props = props.reverse_merge! searchable: false
+      @props = props.reverse_merge! searchable: false, sortable: true
       @proc = proc
     end
 
@@ -29,6 +30,15 @@ module Listings
 
     def searchable?(listing)
       @props[:searchable] && is_model_column?(listing)
+    end
+
+    def sortable?
+      s = @props[:sortable]
+      if !!s == s
+        s # s is Boolean
+      else
+        true # s is the expression that should be used for sorting
+      end
     end
 
     def is_model_column?(listing)
