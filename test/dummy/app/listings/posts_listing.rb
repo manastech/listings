@@ -18,6 +18,9 @@ class PostsListing < Listings::Base
   column do |post|
     h "<b>#{post.title}</b>"
   end
+  column do |post|
+    render partial: 'shared/post_partial', locals: {post: post}
+  end
 
   export :csv
 
