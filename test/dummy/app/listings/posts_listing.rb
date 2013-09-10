@@ -1,4 +1,4 @@
-class PostsListing < Listings::Base  
+class PostsListing < Listings::Base
 
   model Post
 
@@ -18,5 +18,7 @@ class PostsListing < Listings::Base
   column do |post|
     h "<b>#{post.title}</b>"
   end
+
+  export :csv
 
 end

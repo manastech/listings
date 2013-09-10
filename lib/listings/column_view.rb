@@ -29,9 +29,7 @@ module Listings
       self.is_model_column?
     end
 
-    def sort
-      nil
-    end
+    attr_accessor :sort
 
     def next_sort_direction
       sort == 'asc' ? 'desc' : 'asc'

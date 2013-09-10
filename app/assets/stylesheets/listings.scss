@@ -6,11 +6,33 @@
     text-decoration: none;
   }
   a:after {
-    content: '\2195';
+    content: ' \2195';
     color: #ccc;
   }
   a:hover:after {
-    content: '\2191';
+    content: ' \2191';
     color: inherit;
+  }
+
+  &.asc {
+    a:after {
+      content: ' \2191';
+      color: #ccc;
+    }
+    a:hover:after {
+      content: ' \2193';
+      color: inherit;
+    }
+  }
+
+  &.desc {
+    a:after {
+      content: ' \2193';
+      color: #ccc;
+    }
+    a:hover:after {
+      content: ' \2191';
+      color: inherit;
+    }
   }
 }
