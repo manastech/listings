@@ -13,7 +13,7 @@
         - listing.items.each do |item|
           %tr
             - listing.columns.each do |col|
-              %td
+              %td{class: col.cell_css_class}
                 = col.value_for(item)
 
     %ul.nav.clearfix

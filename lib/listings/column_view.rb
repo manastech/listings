@@ -37,6 +37,10 @@ module Listings
       end
     end
 
+    def cell_css_class
+      @column_description.props[:class]
+    end
+
     attr_accessor :sort
 
     def next_sort_direction
