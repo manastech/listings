@@ -21,11 +21,14 @@ module Listings
     end
 
     def human_name(listing)
-      if is_model_column?(listing)
+      return '' if name.blank?
+
+      fallback = if is_model_column?(listing)
         listing.model_class.human_attribute_name(name)
       else
         name
       end
+      I18n.t("listings.headers.#{listing.name}.#{name}", default: fallback)
     end
 
     def searchable?(listing)
