@@ -26,10 +26,24 @@ module Listings
       def export_formats
         self.class.export_formats
       end
+
+      def is_sortable?
+        opt = self.class.sortable_options
+        if opt.nil?
+          true
+        else
+          if opt.length == 1 && !!opt.first == opt.first
+            opt.first
+          else
+            true
+          end
+        end
+      end
     end
 
     module ClassMethods
       attr_accessor :page_size
+      attr_reader :sortable_options
 
       def paginates_per(val)
         @page_size = val
@@ -69,6 +83,10 @@ module Listings
         formats.each do |f|
           export_formats << f
         end
+      end
+
+      def sortable(*options)
+        @sortable_options = options
       end
     end
   end

@@ -26,7 +26,7 @@ module Listings
     end
 
     def sortable?
-      @column_description.sortable? && (self.is_model_column? || @column_description.sortable_property_is_expression?)
+      @listing.is_sortable? && @column_description.sortable? && (self.is_model_column? || @column_description.sortable_property_is_expression?)
     end
 
     def sort_by
