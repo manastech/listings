@@ -16,11 +16,19 @@ module Listings
 
       listing_class = "#{params[:listing]}_listing".classify.constantize
       listing_class.new.tap do |listing|
+        _prepare_view_context view_context
         listing.view_context = view_context
         if !paging
           listing.page_size = :none
         end
         listing.query_items(params)
+      end
+    end
+
+    def _prepare_view_context(view_context)
+      # forward methods from this view context to main app if they are not found
+      view_context.class.send(:define_method, 'method_missing') do |m, *args, &block|
+        view_context.main_app.send(m, *args, &block)
       end
     end
   end
