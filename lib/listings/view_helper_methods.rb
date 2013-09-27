@@ -40,7 +40,7 @@ module Listings
       end
 
       def kind
-        model_class.model_name.human.downcase.pluralize
+        model_class.model_name.human.downcase.pluralize rescue I18n.t('listings.records')
       end
     end
   end

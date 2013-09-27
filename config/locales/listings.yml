@@ -3,3 +3,4 @@ en:
     no_data: "There is are no %{kind} data to display"
     export: "Export"
     search_placeholder: "Search %{kind}"
+    records: "records"
