@@ -14,7 +14,7 @@ module Listings
 
       Kaminari::Helpers::Tag.listings = view_context.listings
 
-      listing_class = "#{params[:listing]}_listing".classify.constantize
+      listing_class = lookup_listing_class(params[:listing])
       listing_class.new.tap do |listing|
         _prepare_view_context view_context
         listing.view_context = view_context
@@ -23,6 +23,10 @@ module Listings
         end
         listing.query_items(params)
       end
+    end
+
+    def lookup_listing_class(name)
+      "#{name}_listing".classify.constantize
     end
 
     def _prepare_view_context(view_context)
