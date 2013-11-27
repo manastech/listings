@@ -46,7 +46,7 @@ module Listings
       if params.include?(param_sort_by)
         sort_col = column_with_name(params[param_sort_by])
         sort_col.sort = params[param_sort_direction]
-        items = items.reorder("#{sort_col.sort_by} #{params[param_sort_direction]}")
+        items = items.reorder(sort_col.sort_by.to_sym => params[param_sort_direction].to_sym)
       end
 
       if paginated?
