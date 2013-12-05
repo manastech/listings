@@ -135,7 +135,7 @@ module Listings
     end
 
     def method_missing(m, *args, &block)
-      view_context.send(m, *args, block)
+      view_context.send(m, *args, &block)
     end
   end
 end
