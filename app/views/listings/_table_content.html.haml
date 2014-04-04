@@ -1,6 +1,6 @@
 .listings-table-content
   - unless listing.items.empty?
-    %table.table.table-hover
+    %table.table.table-hover{'class' => listing.table_css_class}
       %thead
         - listing.columns.each do |col|
           %th{'class' => "#{'sortable ' + (col.sort || '') if col.sortable?}" }

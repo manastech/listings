@@ -39,11 +39,16 @@ module Listings
           end
         end
       end
+
+      def table_css_class
+        self.class.table_css_class
+      end
     end
 
     module ClassMethods
       attr_accessor :page_size
       attr_reader :sortable_options
+      attr_accessor :table_css_class
 
       def paginates_per(val)
         @page_size = val
@@ -87,6 +92,10 @@ module Listings
 
       def sortable(*options)
         @sortable_options = options
+      end
+
+      def css_class(value)
+        @table_css_class = value
       end
     end
   end
