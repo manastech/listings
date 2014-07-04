@@ -80,6 +80,16 @@ module Listings
         columns << ColumnDescriptor.new(self, name, props, proc)
       end
 
+      def selectable #(column = :id)
+        @selectable = true
+        # binding.pry
+        # @column_identifier = column
+      end
+
+      def selectable?
+        @selectable == true
+      end
+
       def export_formats
         @export ||= []
       end

@@ -76,6 +76,10 @@ module Listings
       @has_active_model_source
     end
 
+    def selectable?
+      self.class.selectable?
+    end
+
     def paginated?
       self.page_size != :none
     end
@@ -100,6 +104,10 @@ module Listings
 
     def searchable?
       self.columns.any? &:searchable?
+    end
+
+    def selectable_id(model)
+      model.id
     end
 
     def url

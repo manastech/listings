@@ -24,4 +24,12 @@ class PostsListing < Listings::Base
 
   export :csv
 
+  # selectable do |post|
+  #   post.id
+  # end
+
+  # selectable :id
+
+  selectable
+
 end
