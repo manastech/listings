@@ -20,26 +20,49 @@ $(function(){
     selected_items[this['id']] = [];
   });
 
-  $('.batch-selection#all').click(function (event) {
-    var listingElement = $(this).closest('.listing')[0];
+
+  $(window).bind('click', '.batch-selection#all', function(e) {
+    // Selector in bind is not filtering anything for some reason :(
+    if (!$(e.target).is('#all')) {
+      return;
+    }
+
+    var link = $(e.target);
+    var listingElement = link.closest('.listing')[0];
     var listingName = listingElement['id'];
     $(listingElement).find('.checkbox-selection').each(function(){
       $(this).prop("checked", true).change();
     });
   });
 
-  $('.batch-selection#none').click(function (event) {
-    var listingElement = $(this).closest('.listing')[0];
+  $(window).bind('click', '.batch-selection#none', function(e) {
+    // Selector in bind is not filtering anything for some reason :(
+    if (!$(e.target).is('#none')) {
+      return;
+    }
+
+    var link = $(e.target);
+    var listingElement = link.closest('.listing')[0];
     var listingName = listingElement['id'];
     $(listingElement).find('.checkbox-selection').each(function(){
       $(this).prop("checked", false).change();
     });
   });
 
-  $('.checkbox-selection').change(function() {
-    var listingName = $(this).closest('.listing')[0]['id'];
+  $(window).bind('change', '.checkbox-selection', function(e) {
+    // Selector in bind is not filtering anything for some reason :(
+    if (!$(e.target).hasClass('checkbox-selection')) {
+      return;
+    }
+
+    var checkbox = $(e.target);
+    var listingName = checkbox.closest('.listing')[0]['id'];
     var listingSelectedItems = selected_items[listingName];
-    toggleRowToSelectedRows(this.value, listingSelectedItems, $(this).is(':checked'));
+    toggleRowToSelectedRows(checkbox[0].value, listingSelectedItems, checkbox.is(':checked'));
+  });
+
+  $(window).on('ajaxComplete', function(event, xhr, status) {
+    reloadCheckboxes();
   });
 
   function toggleRowToSelectedRows(colId, listingSelectedItems, checked) {
@@ -52,7 +75,16 @@ $(function(){
       listingSelectedItems.splice(index, 1);
     }
   }
+
+  function reloadCheckboxes() {
+    $.each(selected_items, function(bindingId) {
+      $.each(selected_items[bindingId], function(index, checkboxValue) {
+        $('.listing#' + bindingId).find('.checkbox-selection[value=\'' + checkboxValue + '\']').prop("checked", true);
+      })
+    });
+  }
 });
+
 
 
 function getSelectedRows(name) {
