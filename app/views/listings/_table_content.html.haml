@@ -2,9 +2,10 @@
   - unless listing.items.empty?
     %table.table.table-hover{'class' => listing.table_css_class}
       %thead
-        %th
-          %a.batch-selection#all All
-          %a.batch-selection#none None
+        - if listing.selectable?
+          %th
+            %a.batch-selection#all All
+            %a.batch-selection#none None
 
         - listing.columns.each do |col|
           %th{'class' => "#{'sortable ' + (col.sort || '') if col.sortable?}" }
