@@ -23,33 +23,33 @@ $(function(){
   $('.batch-selection#all').click(function (event) {
     var listingElement = $(this).closest('.listing')[0];
     var listingName = listingElement['id'];
-    selected_items[listingName] = [];
     $(listingElement).find('.checkbox-selection').each(function(){
-      $(this).prop("checked", true);
+      $(this).prop("checked", true).change();
     });
   });
 
   $('.batch-selection#none').click(function (event) {
     var listingElement = $(this).closest('.listing')[0];
     var listingName = listingElement['id'];
-    selected_items[listingName] = [];
     $(listingElement).find('.checkbox-selection').each(function(){
-      $(this).prop("checked", false);
+      $(this).prop("checked", false).change();
     });
   });
 
   $('.checkbox-selection').change(function() {
     var listingName = $(this).closest('.listing')[0]['id'];
-    toggleRowToSelectedRows(this.value, listingName);
+    var listingSelectedItems = selected_items[listingName];
+    toggleRowToSelectedRows(this.value, listingSelectedItems, $(this).is(':checked'));
   });
 
-  function toggleRowToSelectedRows(colId, listingName) {
-    var listingSelectedItems = selected_items[listingName];
+  function toggleRowToSelectedRows(colId, listingSelectedItems, checked) {
     var index = listingSelectedItems.indexOf(colId);
-    if (index > -1) {
-      listingSelectedItems.splice(index, 1);
-    } else {
+    var present = index > -1;
+    if (checked && !present) {
       listingSelectedItems.push(colId);
+    }
+    if (!checked && present) {
+      listingSelectedItems.splice(index, 1);
     }
   }
 });
