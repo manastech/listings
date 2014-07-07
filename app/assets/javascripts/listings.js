@@ -20,33 +20,17 @@ $(function(){
     selected_items[this['id']] = [];
   });
 
-
-  $(window).bind('click', '.batch-selection#all', function(e) {
-    // Selector in bind is not filtering anything for some reason :(
-    if (!$(e.target).is('#all')) {
-      return;
+  $(window).bind('click', '.batch-selection', function(e) {
+    var all_pressed = $(e.target).is('#all');
+    var none_pressed = $(e.target).is('#none');
+    if (all_pressed || none_pressed) {
+      var link = $(e.target);
+      var listingElement = link.closest('.listing')[0];
+      var listingName = listingElement['id'];
+      $(listingElement).find('.checkbox-selection').each(function(){
+        $(this).prop("checked", all_pressed).change();
+      });
     }
-
-    var link = $(e.target);
-    var listingElement = link.closest('.listing')[0];
-    var listingName = listingElement['id'];
-    $(listingElement).find('.checkbox-selection').each(function(){
-      $(this).prop("checked", true).change();
-    });
-  });
-
-  $(window).bind('click', '.batch-selection#none', function(e) {
-    // Selector in bind is not filtering anything for some reason :(
-    if (!$(e.target).is('#none')) {
-      return;
-    }
-
-    var link = $(e.target);
-    var listingElement = link.closest('.listing')[0];
-    var listingName = listingElement['id'];
-    $(listingElement).find('.checkbox-selection').each(function(){
-      $(this).prop("checked", false).change();
-    });
   });
 
   $(window).bind('change', '.checkbox-selection', function(e) {
