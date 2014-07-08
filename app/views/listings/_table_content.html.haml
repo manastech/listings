@@ -3,9 +3,8 @@
     %table.table.table-hover{'class' => listing.table_css_class}
       %thead
         - if listing.selectable?
-          %th
-            %a.batch-selection#all All
-            %a.batch-selection#none None
+          %th.batch-selection-header
+            %input#batch-selection{:type => "checkbox"}
 
         - listing.columns.each do |col|
           %th{'class' => "#{'sortable ' + (col.sort || '') if col.sortable?}" }

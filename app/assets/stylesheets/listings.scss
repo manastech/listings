@@ -37,11 +37,7 @@
   }
 }
 
-.batch-selection {
-  font-weight: normal;
-  cursor: pointer;
-}
-
 .listing {
   th { white-space: nowrap; }
+  th.batch-selection-header { width: 50px; }
 }

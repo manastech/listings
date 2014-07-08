@@ -1,9 +1,9 @@
 //= require jquery-throttle.js
-
 var selected_items = {};
 
 $(function(){
   var search_query = '.search-query';
+  var batchSelectionLastStatus = {};
 
   $('.listing').each(function(){
     var listing = $(this);
@@ -18,20 +18,28 @@ $(function(){
     })
 
     selected_items[this['id']] = [];
+    batchSelectionLastStatus[this['id']] = 'none'
   });
 
-  $(window).bind('click', '.batch-selection', function(e) {
-    var all_pressed = $(e.target).is('#all');
-    var none_pressed = $(e.target).is('#none');
-    if (all_pressed || none_pressed) {
-      var link = $(e.target);
-      var listingElement = link.closest('.listing')[0];
-      var listingName = listingElement['id'];
-      $(listingElement).find('.checkbox-selection').each(function(){
-        $(this).prop("checked", all_pressed).change();
-      });
+  $(window).bind('change', '#batch-selection', function(e) {
+    var checkbox = $(e.target);
+    // Selector in bind is not filtering anything for some reason :(
+    if (!checkbox.is('#batch-selection')) {
+      return;
     }
+
+    var listingElement = checkbox.closest('.listing')[0];
+    var listingName = listingElement['id'];
+    var status = (checkbox.is(':checked') || batchSelectionLastStatus[listingName] == 'some');
+
+    $(listingElement).find('.checkbox-selection').each(function(){
+      $(this).prop("checked", status).change();
+    });
+
+
+
   });
+
 
   $(window).bind('change', '.checkbox-selection', function(e) {
     // Selector in bind is not filtering anything for some reason :(
@@ -40,14 +48,42 @@ $(function(){
     }
 
     var checkbox = $(e.target);
-    var listingName = checkbox.closest('.listing')[0]['id'];
+    var listingElement = checkbox.closest('.listing')[0];
+    var listingName = listingElement['id'];
     var listingSelectedItems = selected_items[listingName];
     toggleRowToSelectedRows(checkbox[0].value, listingSelectedItems, checkbox.is(':checked'));
+    setIndeterminateStateIfRequired($(listingElement), listingSelectedItems, listingName);
   });
 
   $(window).on('ajaxComplete', function(event, xhr, status) {
     reloadCheckboxes();
   });
+
+  function setIndeterminateStateIfRequired(listingElement, listingSelectedItems, listingName) {
+    var batchSelectionCheckbox = listingElement.find('#batch-selection');
+    var totalRowCount = listingElement.find('.checkbox-selection').length;
+    var selectedRowCount = listingElement.find('.checkbox-selection:checked').length;
+
+    var zeroSelected = listingSelectedItems.length == 0;
+    var allSelected = selectedRowCount == totalRowCount;
+
+    if (zeroSelected) {
+      batchSelectionCheckbox[0].indeterminate = false;
+      batchSelectionCheckbox.prop("checked", false);
+      batchSelectionLastStatus[listingName] = 'none';
+    }
+
+    if (allSelected) {
+      batchSelectionCheckbox[0].indeterminate = false;
+      batchSelectionCheckbox.prop("checked", true);
+      batchSelectionLastStatus[listingName] = 'all';
+    }
+
+    if (!allSelected && ! zeroSelected) {
+      batchSelectionCheckbox[0].indeterminate = true;
+      batchSelectionLastStatus[listingName] = 'some';
+    }
+  }
 
   function toggleRowToSelectedRows(colId, listingSelectedItems, checked) {
     var index = listingSelectedItems.indexOf(colId);
@@ -68,7 +104,6 @@ $(function(){
     });
   }
 });
-
 
 
 function getSelectedRows(name) {
