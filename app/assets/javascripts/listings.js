@@ -35,9 +35,6 @@ $(function(){
     $(listingElement).find('.checkbox-selection').each(function(){
       $(this).prop("checked", status).change();
     });
-
-
-
   });
 
 
@@ -57,6 +54,12 @@ $(function(){
 
   $(window).on('ajaxComplete', function(event, xhr, status) {
     reloadCheckboxes();
+  });
+
+  $('.scope_link').bind('click', function(e) {
+    var listingElement = $(this).closest('.listing')[0];
+    var listingName = listingElement['id'];
+    selected_items[listingName] = []
   });
 
   function setIndeterminateStateIfRequired(listingElement, listingSelectedItems, listingName) {
@@ -101,6 +104,8 @@ $(function(){
       $.each(selected_items[bindingId], function(index, checkboxValue) {
         $('.listing#' + bindingId).find('.checkbox-selection[value=\'' + checkboxValue + '\']').prop("checked", true);
       })
+      var listingElement = $('.listing#' + bindingId)[0];
+      setIndeterminateStateIfRequired($(listingElement), selected_items[bindingId], bindingId);
     });
   }
 });
