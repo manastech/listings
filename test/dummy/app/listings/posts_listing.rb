@@ -9,6 +9,10 @@ class PostsListing < Listings::Base
 
   paginates_per 10
 
+  row_style do |post|
+    'my-class' if post.id % 2 == 0
+  end
+
   column :id
   column :title, searchable: true
   column :author, searchable: true

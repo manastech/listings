@@ -15,7 +15,7 @@
 
       %tbody
         - listing.items.each do |item|
-          %tr
+          %tr{class: listing.row_style_for(item)}
             - if listing.selectable?
               %td
                 %input.checkbox-selection{:name => "selected", :type => "checkbox", :value => item.id}

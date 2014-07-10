@@ -12,3 +12,7 @@
  *= require listings
  *= require_tree .
  */
+
+.my-class {
+  background-color:#FFE3CD;
+}

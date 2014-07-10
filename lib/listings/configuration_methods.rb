@@ -43,12 +43,17 @@ module Listings
       def table_css_class
         self.class.table_css_class
       end
+
+      def row_style_for(item)
+        self.class.row_style_applicator.call item if self.class.row_style_applicator
+      end
     end
 
     module ClassMethods
       attr_accessor :page_size
       attr_reader :sortable_options
       attr_accessor :table_css_class
+      attr_reader :row_style_applicator
 
       def paginates_per(val)
         @page_size = val
@@ -82,7 +87,6 @@ module Listings
 
       def selectable #(column = :id)
         @selectable = true
-        # binding.pry
         # @column_identifier = column
       end
 
@@ -106,6 +110,10 @@ module Listings
 
       def css_class(value)
         @table_css_class = value
+      end
+
+      def row_style(&proc)
+        @row_style_applicator = proc
       end
     end
   end
