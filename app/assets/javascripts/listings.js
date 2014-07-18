@@ -70,6 +70,10 @@ $(function(){
     var zeroSelected = listingSelectedItems.length == 0;
     var allSelected = selectedRowCount == totalRowCount;
 
+    if (batchSelectionCheckbox.length == 0) {
+      return;
+    }
+
     if (zeroSelected) {
       batchSelectionCheckbox[0].indeterminate = false;
       batchSelectionCheckbox.prop("checked", false);
