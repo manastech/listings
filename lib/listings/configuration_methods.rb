@@ -72,10 +72,10 @@ module Listings
       end
 
       def process_scopes
-        @scopes.each do |scope|
+        scopes.each do |scope|
           scope.construct if scope.deferred?
         end
-        @scopes = @scopes.select{ |s| !s.deferred? }
+        @scopes = scopes.select{ |s| !s.deferred? }
       end
 
 
