@@ -37,5 +37,25 @@ module Listings
         end
       end
     end
+
+    def deferred?
+      false
+    end
+  end
+
+  class DeferredScopeDescriptor
+    attr_accessor :block
+
+    def initialize(&block)
+      @block = block
+    end
+
+    def construct
+      @block.call
+    end
+
+    def deferred?
+      true
+    end
   end
 end

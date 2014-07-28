@@ -14,7 +14,7 @@ module Listings
       attr_accessor :page_size
 
       def scopes
-        self.class.scopes
+        @scopes ||= self.class.process_scopes
       end
 
       def columns
@@ -66,6 +66,18 @@ module Listings
       def scopes
         @scopes ||= []
       end
+
+      def deferred_scopes(&block)
+        scopes << DeferredScopeDescriptor.new(&block)
+      end
+
+      def process_scopes
+        @scopes.each do |scope|
+          scope.construct if scope.deferred?
+        end
+        @scopes = @scopes.select{ |s| !s.deferred? }
+      end
+
 
       def model(model_class = nil, &proc)
         if !model_class.nil?
