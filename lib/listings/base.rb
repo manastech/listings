@@ -50,7 +50,7 @@ module Listings
       end
 
       if paginated?
-        items = items.page(page).per(page_size)
+        items = paginatable(items).page(page).per(page_size)
       end
 
       if items.is_a?(Class)
@@ -65,11 +65,15 @@ module Listings
       items = self.model_class
       @has_active_model_source = items.respond_to? :human_attribute_name
 
-      if items.is_a?(Array) && paginated?
-        items = Kaminari.paginate_array(items)
-      end
+      self.items = filter_items(self.scoped_params, paginatable(items))
+    end
 
-      self.items = filter_items(self.scoped_params, items)
+    def paginatable(array_or_model)
+      if array_or_model.is_a?(Array) && paginated?
+        Kaminari.paginate_array(array_or_model)
+      else
+        array_or_model
+      end
     end
 
     def has_active_model_source?
