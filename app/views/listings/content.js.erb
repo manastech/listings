@@ -1,2 +1,4 @@
 jQuery("#<%=@listing.name%> .listings-table-content").html("<%= escape_javascript(render :partial => 'listings/table_content', :locals => { :listing => @listing }) %>");
 jQuery("#<%=@listing.name%>.listing").data('url', "<%= raw @listing.url %>");
+
+jQuery("#<%=@listing.name%>.listing").trigger("listings:loaded", { element: jQuery("#<%=@listing.name%>.listing") });

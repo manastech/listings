@@ -14,3 +14,11 @@
 //= require jquery_ujs
 //= require listings
 //= require_tree .
+
+// Test for triggered 'loaded' event
+// $(function() {
+//   $('.listing').on('listings:loaded', function(event, el) {
+//     console.log('Loaded');
+//     console.log(el);
+//   });
+// });
