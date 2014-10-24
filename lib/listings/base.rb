@@ -50,7 +50,7 @@ module Listings
       end
 
       if paginated?
-        items = paginatable(items).page(page).per(page_size)
+        items = items.page(page).per(page_size)
       end
 
       if items.is_a?(Class)

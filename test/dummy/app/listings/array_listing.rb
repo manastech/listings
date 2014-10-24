@@ -1,6 +1,6 @@
 class ArrayListing < Listings::Base
 
-  model { (1..30).to_a }
+  model { (1..50).to_a }
 
   scope 'Todos', :all, default: true
   scope 'Impares', :impares, lambda { |items| items.select{|i| i % 2 == 1} }
