@@ -31,7 +31,7 @@ module Listings
       self.scope = scope_by_name(params[param_scope])
       self.search = params[param_search]
 
-      items = scope.apply(self, items) unless scope.nil?
+      items = paginatable(scope.apply(self, items)) unless scope.nil?
 
       if search.present? && self.searchable?
         criteria = []
@@ -69,7 +69,7 @@ module Listings
     end
 
     def paginatable(array_or_model)
-      if array_or_model.is_a?(Array) && paginated?
+      if array_or_model.is_a?(Array) && paginated? && !array_or_model.respond_to?(:page)
         Kaminari.paginate_array(array_or_model)
       else
         array_or_model
