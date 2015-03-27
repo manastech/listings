@@ -29,7 +29,7 @@
           = paginate listing.items, :remote => true, :theme => 'twitter-bootstrap', :params => listing.params, :remote => true
       - unless listing.export_formats.empty?
         %li.pull-right
-          %ul.inline
+          %ul.inline.list-inline
             %li
               = listing.export_message
             - listing.export_formats.each do |format|
