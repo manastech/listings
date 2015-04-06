@@ -1,3 +1,5 @@
+@import "bootstrap/mixins";
+
 .sortable {
   a {
     color: inherit;
@@ -40,4 +42,32 @@
 .listing {
   th { white-space: nowrap; }
   th.batch-selection-header { width: 50px; }
+  td li { word-break: break-word; }
+
+  .form-filter {
+    margin-top: 10px;
+  }
+
+  .input-append {
+    input[type='text'] {
+      @include border-radius(4px 0 0 4px);
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+
+  ul.applied-filters {
+    list-style: none;
+    margin: 0 0 10px 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      margin-right: 5px;
+
+      .remove {
+        margin-right: 3px;
+      }
+    }
+  }
 }

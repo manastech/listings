@@ -112,6 +112,35 @@ $(function(){
       setIndeterminateStateIfRequired($(listingElement), selected_items[bindingId], bindingId);
     });
   }
+
+  $('.listing').on('click', '.filters a', function(e) {
+    elem = $(this);
+
+    var key = elem.data('key');
+    var value = elem.data('value');
+
+    $('.applied-filters li[data-key=' + key + ']').remove();
+
+    var li = $('<li></li>').attr('data-key', key).addClass('label label-info');
+    var label = $('<span></span>').text(key + ': ' + value);
+    var remove = $('<a class="remove" href="#"><i class="icon-remove icon-white"></i></a>');
+    var input = $("<input type='hidden' name='filter[" + key + "]' value='" + value + "'/>");
+
+    li.append(remove).append(label).append(input);
+
+    $('.applied-filters').append(li);
+
+    $('.form-filter').submit();
+
+    e.preventDefault();
+  });
+
+  $('.listing').on('click', '.applied-filters .remove', function(e) {
+    elem = $(this);
+    elem.parent('li').remove();
+    $('.form-filter').submit();
+    e.preventDefault();
+  });
 });
 
 

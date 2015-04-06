@@ -12,6 +12,7 @@ module Listings
       attr_accessor :items
       attr_accessor :search
       attr_accessor :page_size
+      attr_accessor :filter_values
 
       def scopes
         @scopes ||= self.class.process_scopes
@@ -46,6 +47,10 @@ module Listings
 
       def row_style_for(item)
         self.class.row_style_applicator.call item if self.class.row_style_applicator
+      end
+
+      def filters
+        self.class.filters
       end
     end
 
@@ -126,6 +131,14 @@ module Listings
 
       def row_style(&proc)
         @row_style_applicator = proc
+      end
+
+      def filters
+        @filters ||= []
+      end
+
+      def filter name
+        filters << name
       end
     end
   end

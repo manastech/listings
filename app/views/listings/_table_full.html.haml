@@ -1,13 +1,35 @@
-- unless listing.scopes.empty? && !listing.searchable?
-  %ul.nav.nav-pills
-    - listing.scopes.each do |scope|
-      %li{class: "#{'active' if listing.is_active_scope(scope)}"}
-        = link_to scope.human_name, listing.url_for_scope(scope), :remote => true, class: 'scope_link'
-    - if listing.searchable?
-      %li.pull-right
-        %form.form-search{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
-          - listing.scoped_params.each do |key,value|
-            %input{type: 'hidden', name: key, value: value}
-          %input.search-query{name: listing.param_search, value: listing.scoped_params[listing.param_search], placeholder: listing.search_placeholder}
-
-= render 'listings/table_content', :listing => listing
+.row-fluid
+  %div{:class => listing.filterable? ? 'span10' : 'span12'}
+    - if listing.filterable?
+      .row-fluid
+        .span12
+          %form.form-filter{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
+            - listing.scoped_params.each do |key,value|
+              %input{type: 'hidden', name: key, value: value}
+            %ul.applied-filters
+              - listing.filter_params.each do |key, value|
+                %li.label.label-info{'data-key' => key}
+                  %a.remove{href: '#'}
+                    %i.icon-remove.icon-white
+                  %input{type: 'hidden', name: "filter[#{key}]", value: value}
+            .input-append
+              %input.input-xxlarge{type: 'text', name: 'text_filter', value: listing.text_filter_param}
+              %button.btn{type: 'submit'} Search
+    - unless listing.scopes.empty? && !listing.searchable?
+      .row-fluid
+        .span12
+          %ul.nav.nav-pills
+            - listing.scopes.each do |scope|
+              %li{class: "#{'active' if listing.is_active_scope(scope)}"}
+                = link_to scope.human_name, listing.url_for_scope(scope), :remote => true, class: 'scope_link'
+            - if listing.searchable?
+              %li.pull-right
+                %form.form-search{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
+                  - listing.scoped_params.each do |key,value|
+                    %input{type: 'hidden', name: key, value: value}
+                  %input.search-query{name: listing.param_search, value: listing.scoped_params[listing.param_search], placeholder: listing.search_placeholder}
+    .row-fluid
+      .span12
+        = render 'listings/table_content', :listing => listing
+  - if listing.filterable?
+    = render 'listings/filters', :listing => listing

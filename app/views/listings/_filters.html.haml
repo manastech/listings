@@ -1,0 +1,11 @@
+.span2.filters
+  %h4 Fields
+  - listing.filter_values.each do |k,v|
+    %ul
+      %li
+        = k
+        %ul
+          - v.each do |x|
+            %li
+              %a{:href => '#', :'data-key' => k, :'data-value' => x}= x
+

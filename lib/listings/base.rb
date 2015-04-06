@@ -43,6 +43,23 @@ module Listings
         items = items.where(criteria.join(' or '), *values)
       end
 
+      if filterable?
+        # pluck filters values before applying filters/pagination/sorting
+        self.filter_values = {}
+        filters.each do |v|
+          self.filter_values[v] = items.pluck("distinct #{v}").reject(&:nil?)
+        end
+
+        text_filters = parse_text_filters
+        filters.each do |key|
+          filter_value = text_filters[key].present? ? text_filters[key] : filter_params[key]
+
+          if filter_value.present?
+            items = items.where("#{model_class.table_name}.#{key} = ?", filter_value)
+          end
+        end
+      end
+
       if params.include?(param_sort_by)
         sort_col = column_with_name(params[param_sort_by])
         sort_col.sort = params[param_sort_direction]
@@ -108,6 +125,29 @@ module Listings
 
     def searchable?
       self.columns.any? &:searchable?
+    end
+
+    def filterable?
+      !self.filters.empty?
+    end
+
+    def filter_params
+      @params[:filter] || {}
+    end
+
+    def text_filter_param
+      @params[:text_filter] || ''
+    end
+
+    def parse_text_filters
+      filters = HashWithIndifferentAccess.new
+      if text_filter_param.present?
+        s = StringScanner.new text_filter_param
+        while s.scan(/\s*(\w+):\s*(\w+)\s*,?/)
+          filters[s[1]] = s[2]
+        end
+      end
+      filters
     end
 
     def selectable_id(model)
