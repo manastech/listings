@@ -1,4 +1,9 @@
-@import "bootstrap/mixins";
+// Border Radius
+@mixin lstngs-border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+          border-radius: $radius;
+}
 
 .sortable {
   a {
@@ -50,7 +55,7 @@
 
   .input-append {
     input[type='text'] {
-      @include border-radius(4px 0 0 4px);
+      @include lstngs-border-radius(4px 0 0 4px);
       height: 32px;
       line-height: 32px;
     }
