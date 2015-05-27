@@ -1,0 +1,25 @@
+%h1 Welcome#index
+
+%dl
+  %dt
+    = link_to 'Posts', posts_path
+  %dd
+    ActiveRecord based listing with scopes, deferred_scopes, styles and selectable
+
+%dl
+  %dt
+    = link_to 'Filtered posts', filtered_posts_path
+  %dd
+    ActiveRecord based listing with filters
+
+%dl
+  %dt
+    = link_to 'Hash', hash_path
+  %dd
+    Array of Hash based listing
+
+%dl
+  %dt
+    = link_to 'Array', hash_path
+  %dd
+    Array based listing

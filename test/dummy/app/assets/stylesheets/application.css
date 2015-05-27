@@ -16,3 +16,7 @@
 .my-class {
   background-color:#FFE3CD;
 }
+
+body {
+  padding-top: 60px;
+}

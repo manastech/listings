@@ -1,11 +1,11 @@
-.span2.filters
-  %h4 Fields
+.filters
   - listing.filter_values.each do |k,v|
-    %ul
-      %li
-        = k
-        %ul
-          - v.each do |x|
-            %li
-              %a{:href => '#', :'data-key' => k, :'data-value' => x}= x
+    %ul.nav.nav-list.well
+      %li.nav-header
+        = "Filter by #{k}"
+      - v.each do |x|
+        %li.filter
+          %a{:href => '#', :'data-key' => k, :'data-value' => x}
+            = x
+            %i.icon-remove
 

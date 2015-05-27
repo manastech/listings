@@ -56,10 +56,14 @@ $(function(){
     reloadCheckboxes();
   });
 
+  function clearSelectedItems(listingElement) {
+    var listingName = listingElement.attr('id');
+    selected_items[listingName] = [];
+  }
+
   $('.scope_link').bind('click', function(e) {
-    var listingElement = $(this).closest('.listing')[0];
-    var listingName = listingElement['id'];
-    selected_items[listingName] = []
+    var listingElement = $(this).closest('.listing');
+    clearSelectedItems(listingElement);
   });
 
   function setIndeterminateStateIfRequired(listingElement, listingSelectedItems, listingName) {
@@ -113,34 +117,60 @@ $(function(){
     });
   }
 
-  $('.listing').on('click', '.filters a', function(e) {
+  $('.listing').on('click', '.filter a', function(e) {
     elem = $(this);
+    var listingElement = elem.closest('.listing');
+    clearSelectedItems(listingElement);
 
     var key = elem.data('key');
     var value = elem.data('value');
 
-    $('.applied-filters li[data-key=' + key + ']').remove();
+    var search_data = listingElement.data('search');
+    if (search_data.filters[key] == value) {
+      delete search_data.filters[key];
+    } else {
+      search_data.filters[key] = value;
+    }
 
-    var li = $('<li></li>').attr('data-key', key).addClass('label label-info');
-    var label = $('<span></span>').text(key + ': ' + value);
-    var remove = $('<a class="remove" href="#"><i class="icon-remove icon-white"></i></a>');
-    var input = $("<input type='hidden' name='filter[" + key + "]' value='" + value + "'/>");
+    listingElement.data('search', search_data);
+    updateListingFromSearchData(listingElement);
+  }).on("listings:loaded", function(e){
+    // highlight current filter
+    var listingElement = $(this).closest('.listing');
+    listingElement.find('.filter.active').removeClass('active');
 
-    li.append(remove).append(label).append(input);
+    var search_data = listingElement.data('search');
+    for(key in search_data.filters) {
+      listingElement.find('.filter a[data-key=' + searchEscape(key) + '][data-value=' + searchEscape(search_data.filters[key]) + ']').parent().addClass('active');
+    }
 
-    $('.applied-filters').append(li);
-
-    $('.form-filter').submit();
-
-    e.preventDefault();
   });
 
-  $('.listing').on('click', '.applied-filters .remove', function(e) {
-    elem = $(this);
-    elem.parent('li').remove();
-    $('.form-filter').submit();
-    e.preventDefault();
-  });
+  function searchEscape(value) {
+    if (value == /\w+/) {
+      return value;
+    } else if (value.indexOf("'") > -1) {
+      return '"' + value + '"';
+    } else {
+      return "'" + value + "'";
+    }
+  }
+
+  function updateListingFromSearchData(listingElement) {
+    s = ""
+    search_data = listingElement.data('search');
+    for(key in search_data.filters) {
+      s += key + ":" + searchEscape(search_data.filters[key])
+      s += " ";
+    }
+    if (search_data.criteria) {
+      s += search_data.criteria;
+    }
+
+    var search = $(search_query, listingElement);
+    search.val(s);
+    search.closest('form').submit();
+  }
 });
 
 
@@ -152,5 +182,4 @@ function refreshListing(name) {
   var url = $('#' + name).data('url');
   $.get(url);
 }
-
 

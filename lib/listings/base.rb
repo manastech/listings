@@ -12,6 +12,9 @@ module Listings
     attr_accessor :view_context
     attr_accessor :params
 
+    attr_accessor :search_criteria
+    attr_accessor :search_filters
+
     def initialize
       @page_size = self.class.page_size
     end
@@ -26,19 +29,54 @@ module Listings
     def param_sort_by; :sort_by; end
     def param_sort_direction; :sort_d; end
 
+    def parse_search
+      if !filterable?
+        # if it is not filterable, all the search is used as search criteria
+        self.search_criteria = self.search
+        self.search_filters = {}
+      else
+        # otherwise parse the search stripping out allowed filterable fields
+        self.search_filters, self.search_criteria = parse_filter(self.search, self.filters)
+      end
+    end
+
+    def parse_filter(text, filter_keys)
+      filters = {}
+      filter_keys.each do |key|
+        text = collect_filter text, key, filters
+      end
+
+      return filters, text
+    end
+
+    def collect_filter(text, filter, filters_hash)
+      ["#{filter}:\s*(\\w+)",
+       "#{filter}:\s*\"([^\"]+)\"",
+       "#{filter}:\s*\'([^\']+)\'"].each do |pattern|
+        m = Regexp.new(pattern, Regexp::IGNORECASE).match(text)
+        if m
+          filters_hash[filter] = m[1]
+          return "#{m.pre_match.strip} #{m.post_match.strip}".strip
+        end
+      end
+
+      return text
+    end
+
     def filter_items(params, items)
       self.page = params[param_page] || 1
       self.scope = scope_by_name(params[param_scope])
       self.search = params[param_search]
+      parse_search
 
       items = paginatable(scope.apply(self, items)) unless scope.nil?
 
-      if search.present? && self.searchable?
+      if search_criteria.present? && self.searchable?
         criteria = []
         values = []
         self.columns.select(&:searchable?).each do |col|
           criteria << "#{model_class.table_name}.#{col.name} like ?"
-          values << "%#{search}%"
+          values << "%#{search_criteria}%"
         end
         items = items.where(criteria.join(' or '), *values)
       end
@@ -50,13 +88,8 @@ module Listings
           self.filter_values[v] = items.pluck("distinct #{v}").reject(&:nil?)
         end
 
-        text_filters = parse_text_filters
-        filters.each do |key|
-          filter_value = text_filters[key].present? ? text_filters[key] : filter_params[key]
-
-          if filter_value.present?
-            items = items.where("#{model_class.table_name}.#{key} = ?", filter_value)
-          end
+        self.search_filters.each do |key, filter_value|
+          items = items.where("#{model_class.table_name}.#{key} = ?", filter_value)
         end
       end
 
@@ -131,31 +164,16 @@ module Listings
       !self.filters.empty?
     end
 
-    def filter_params
-      @params[:filter] || {}
-    end
-
-    def text_filter_param
-      @params[:text_filter] || ''
-    end
-
-    def parse_text_filters
-      filters = HashWithIndifferentAccess.new
-      if text_filter_param.present?
-        s = StringScanner.new text_filter_param
-        while s.scan(/\s*(\w+):\s*(\w+)\s*,?/)
-          filters[s[1]] = s[2]
-        end
-      end
-      filters
-    end
-
     def selectable_id(model)
       model.id
     end
 
     def url
       view_context.listings.listing_full_path(self.name, self.params)
+    end
+
+    def search_data
+      { criteria: self.search_criteria, filters: self.search_filters }
     end
 
     def format

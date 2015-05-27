@@ -1,4 +1,4 @@
-.listing{:id => listing.name, :'data-url' => listing.url }
+.listing{:id => listing.name, :'data-url' => listing.url, :'data-search' => listing.search_data.to_json }
   = render 'listings/table_full', :listing => listing
 
 :javascript

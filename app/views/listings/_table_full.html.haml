@@ -1,28 +1,13 @@
 .row-fluid
   %div{:class => listing.filterable? ? 'span10' : 'span12'}
-    - if listing.filterable?
-      .row-fluid
-        .span12
-          %form.form-filter{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
-            - listing.scoped_params.each do |key,value|
-              %input{type: 'hidden', name: key, value: value}
-            %ul.applied-filters
-              - listing.filter_params.each do |key, value|
-                %li.label.label-info{'data-key' => key}
-                  %a.remove{href: '#'}
-                    %i.icon-remove.icon-white
-                  %input{type: 'hidden', name: "filter[#{key}]", value: value}
-            .input-append
-              %input.input-xxlarge{type: 'text', name: 'text_filter', value: listing.text_filter_param}
-              %button.btn{type: 'submit'} Search
-    - unless listing.scopes.empty? && !listing.searchable?
+    - if !listing.scopes.empty? || listing.searchable? || listing.filterable?
       .row-fluid
         .span12
           %ul.nav.nav-pills
             - listing.scopes.each do |scope|
               %li{class: "#{'active' if listing.is_active_scope(scope)}"}
                 = link_to scope.human_name, listing.url_for_scope(scope), :remote => true, class: 'scope_link'
-            - if listing.searchable?
+            - if listing.searchable? || listings.filterable?
               %li.pull-right
                 %form.form-search{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
                   - listing.scoped_params.each do |key,value|
@@ -32,4 +17,5 @@
       .span12
         = render 'listings/table_content', :listing => listing
   - if listing.filterable?
-    = render 'listings/filters', :listing => listing
+    .span2
+      = render 'listings/filters', :listing => listing

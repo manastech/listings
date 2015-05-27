@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Dummy</title>
-  
+
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
   <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
@@ -12,7 +12,17 @@
 </head>
 <body>
 
-<%= yield %>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <%= link_to 'Listings Sample', root_path, class: 'brand' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <%= yield %>
+  </div>
 
 </body>
 </html>
