@@ -7,7 +7,7 @@
             - listing.scopes.each do |scope|
               %li{class: "#{'active' if listing.is_active_scope(scope)}"}
                 = link_to scope.human_name, listing.url_for_scope(scope), :remote => true, class: 'scope_link'
-            - if listing.searchable? || listings.filterable?
+            - if listing.searchable? || listing.filterable?
               %li.pull-right
                 %form.form-search{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
                   - listing.scoped_params.each do |key,value|
