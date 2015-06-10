@@ -35,7 +35,7 @@ begin
 
   task :default => :spec
   task :test => :spec
-  task :spec => :'app:test:prepare'
+  task :spec => :'app:db:setup'
 rescue LoadError
 end
 
