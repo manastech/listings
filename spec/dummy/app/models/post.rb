@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  attr_accessible :title, :author, :category
+  attr_accessible :title, :author, :category if Rails::VERSION::MAJOR == 3
 
   scope :even, where('id % 2 = 0')
   scope :odd, where('id % 2 = 1')
