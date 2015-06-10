@@ -4,5 +4,7 @@ rvm:
   - 2.0.0
 gemfile:
   - listings.gemfile
+before_script:
+  - bundle install
 script:
   - bundle exec rake test
