@@ -5,6 +5,16 @@ require "listings/version"
 
 travis = ENV["TRAVIS"] || "false"
 
+rails_version = ENV["RAILS_VERSION"] || "default"
+rails = case rails_version
+when "master"
+  {github: "rails/rails"}
+when "default"
+  "~> 3.2.13"
+else
+  "~> #{rails_version}"
+end
+
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "listings"
@@ -18,9 +28,9 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails" # , "~> 3.2.13"
+  s.add_dependency "rails", rails
   s.add_dependency 'haml-rails'
-  s.add_dependency 'sass-rails' # , '~> 3.2.3'
+  s.add_dependency 'sass-rails'
   s.add_dependency 'kaminari'
   s.add_dependency 'bootstrap-kaminari-views'
   # s.add_dependency "jquery-rails"
