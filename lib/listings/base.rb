@@ -207,5 +207,14 @@ module Listings
     def method_missing(m, *args, &block)
       view_context.send(m, *args, &block)
     end
+
+    def kaminari_theme
+      case Listings.configuration.theme
+      when 'twitter-bootstrap-2'
+        'twitter-bootstrap'
+      else
+        Listings.configuration.theme
+      end
+    end
   end
 end
