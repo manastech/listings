@@ -9,6 +9,7 @@ class PostsListing < Listings::Base
 
   deferred_scopes do
     Post.select('DISTINCT category').map do |post|
+      next if post.category.nil?
       scope post.category, post.category.to_sym, lambda { |items| items.where('category = ?', post.category) }
     end
   end
