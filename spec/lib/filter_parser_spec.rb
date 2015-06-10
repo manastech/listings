@@ -1,12 +1,7 @@
-require 'test_helper'
+require 'spec_helper'
 
-class ListingsTest < ActiveSupport::TestCase
-  test "truth" do
-    assert_kind_of Module, Listings
-  end
-
-  test "parse filter" do
-
+describe Listings do
+  it "does something" do
     assert_parse_filter "author:me", {author: "me"}, ""
     assert_parse_filter "Author:me", {author: "me"}, ""
 
@@ -26,7 +21,6 @@ class ListingsTest < ActiveSupport::TestCase
     assert_parse_filter "author:'John Doe:s'", {author: "John Doe:s"}, ""
 
     assert_parse_filter "bar author:'me:s' baz category:\"foo foo\"", {author: "me:s", category: "foo foo"}, "bar baz"
-
   end
 
   def assert_parse_filter(text, hash, left_text)
@@ -34,8 +28,7 @@ class ListingsTest < ActiveSupport::TestCase
 
     filters, s = listing.parse_filter text, hash.keys
 
-    assert_equal s, left_text
-    assert_equal filters, hash
+    s.should eq(left_text)
+    filters.should eq(hash)
   end
-
 end
