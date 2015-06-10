@@ -3,6 +3,8 @@ $:.push File.expand_path("../lib", __FILE__)
 # Maintain your gem's version:
 require "listings/version"
 
+travis = ENV["TRAVIS"] || "false"
+
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "listings"
@@ -25,6 +27,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency 'rspec'
-  s.add_development_dependency 'pry'
-  s.add_development_dependency 'pry-debugger'
+  if travis == "false"
+    s.add_development_dependency 'pry'
+    s.add_development_dependency 'pry-debugger'
+  end
 end
