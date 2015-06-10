@@ -5,7 +5,6 @@ rvm:
 env:
   - "RAILS_VERSION=3.2"
   - "RAILS_VERSION=4.2.1"
-  - "RAILS_VERSION=master"
 gemfile:
   - listings.gemfile
 before_script:

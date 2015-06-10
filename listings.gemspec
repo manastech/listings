@@ -7,8 +7,6 @@ travis = ENV["TRAVIS"] || "false"
 
 rails_version = ENV["RAILS_VERSION"] || "default"
 rails = case rails_version
-when "master"
-  { 'git' => 'https://github.com/rails/rails' }
 when "default"
   "~> 3.2.13"
 else
@@ -28,7 +26,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["{test,spec}/**/*"]
 
-  s.add_dependency "rails", *rails
+  s.add_dependency "rails", rails
   s.add_dependency 'haml-rails'
   s.add_dependency 'sass-rails'
   s.add_dependency 'kaminari'
