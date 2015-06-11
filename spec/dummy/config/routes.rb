@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   get 'array', to: 'welcome#array'
   get 'hash', to: 'welcome#hash'
+  get 'tracks', to: 'welcome#tracks'
 
   root to: 'welcome#index'
 

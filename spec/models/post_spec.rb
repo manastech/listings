@@ -1,6 +1,6 @@
 RSpec.describe Post, type: :model do
-  describe "Create" do
-    it "can be created" do
+  describe "Factory" do
+    it "can create" do
       create(:post)
       expect(Post.count).to eq(1)
     end
