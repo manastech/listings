@@ -4,6 +4,6 @@ class TracksListing < Listings::Base
 
   column :order
   column :title
-  column [:album, :name] # handle has_many relations
+  # column [:album, :name] # handle has_many relations
 
 end
