@@ -65,10 +65,13 @@ RSpec.describe ActiveRecordDataSource do
       end
 
       it "should perform a single query" do
+        # ActiveRecord::Base.logger = Logger.new(STDOUT)
+        # puts
         expect(ActiveRecord::Base.count_queries do
           album_name.value_for(ds.items.first)
-          album_name.value_for(ds.items.first)
+          album_id.value_for(ds.items.first)
         end).to eq(1)
+        # ActiveRecord::Base.logger = nil
       end
     end
   end
