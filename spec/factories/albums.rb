@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :album do
-    name "MyString"
+    name
 
     transient do
       tracks_count 5

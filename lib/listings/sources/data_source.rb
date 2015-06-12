@@ -11,8 +11,23 @@ module Listings::Sources
     def paginate(page, page_size)
     end
 
+    # returns a +Field+ for the specified options
+    def build_field(path)
+    end
+
     def self.for(model)
       raise "Unable to create datasource for #{model}"
+    end
+  end
+
+  class Field
+    attr_reader :data_source
+
+    def initialize(data_source)
+      @data_source = data_source
+    end
+
+    def value_for(item)
     end
   end
 end
