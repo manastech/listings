@@ -1,12 +1,17 @@
 module Listings::Sources
   class ActiveRecordDataSource < DataSource
     def initialize(model)
-      @model = model
+      @items = model
     end
 
     def items
-      @model
+      @items
     end
+
+    def paginate(page, page_size)
+      @items = @items.page(page).per(page_size)
+    end
+
   end
 
   class DataSource
