@@ -18,6 +18,10 @@ module Listings::Sources
     def search(fields, value)
     end
 
+    # applies exact match filtering among specified field
+    def filter(field, value)
+    end
+
     # applies sorting with specified direction to items
     # subclasses should implement +sort_with_direction+ in order to leave
     # default direction logic in +DataSource+
@@ -26,7 +30,7 @@ module Listings::Sources
     end
 
     # returns all values of field
-    # usually calling +search+/+sort+/+paginate+ should not affect the results.
+    # usually calling +search+/+filter+/+sort+/+paginate+ should not affect the results.
     # calling +scope+ should affect the results.
     def values_for_filter(field)
     end

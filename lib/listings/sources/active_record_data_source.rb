@@ -44,6 +44,10 @@ module Listings::Sources
       @items = @items.where(criteria.join(' or '), *values)
     end
 
+    def filter(field, value)
+      @items = @items.where("#{field.query_column} = ?", value)
+    end
+
     def paginate(page, page_size)
       @items = @items.page(page).per(page_size)
     end

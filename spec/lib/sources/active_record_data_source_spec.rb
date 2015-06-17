@@ -112,6 +112,19 @@ RSpec.describe ActiveRecordDataSource do
         end
       end
 
+      describe "filter" do
+        before(:each) do
+          create_list(:post, 10, author: 'author1')
+          create_list(:post, 10, author: 'author2')
+
+          ds.filter(author, 'author1')
+        end
+
+        it "should return matching items" do
+          expect(ds.items.count).to be(10)
+        end
+      end
+
       describe "values_for_filter" do
         let(:total_count) { 0 } # skip default test posts
 
@@ -152,7 +165,15 @@ RSpec.describe ActiveRecordDataSource do
           it_behaves_like "project all authors"
         end
 
-        context "with search" do
+        context "with filter" do
+          before(:each) do
+            ds.filter(author, 'author2')
+          end
+
+          it_behaves_like "project all authors"
+        end
+
+        context "with paging" do
           before(:each) do
             ds.paginate(1, 1)
           end
@@ -229,6 +250,19 @@ RSpec.describe ActiveRecordDataSource do
         it "should return matching items" do
           show_query ds
           expect(ds.items.count).to be(20)
+        end
+      end
+
+      describe "filter" do
+        before(:each) do
+          create(:album, tracks_count: 5, name: 'album-name-magic-string-1')
+          create(:album, tracks_count: 5, name: 'album-name-magic-string-2')
+
+          ds.filter(album_name, 'album-name-magic-string-1')
+        end
+
+        it "should return matching items" do
+          expect(ds.items.count).to be(5)
         end
       end
 
