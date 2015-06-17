@@ -25,6 +25,12 @@ module Listings::Sources
       sort_with_direction(field, direction)
     end
 
+    # returns all values of field
+    # usually calling +search+/+sort+/+paginate+ should not affect the results.
+    # calling +scope+ should affect the results.
+    def values_for_filter(field)
+    end
+
     # apply pagination filter to +items+
     # items of the selected page can be obtained through +items+
     def paginate(page, page_size)
@@ -46,6 +52,7 @@ module Listings::Sources
       @data_source = data_source
     end
 
+    # returns this field over the item
     def value_for(item)
     end
   end

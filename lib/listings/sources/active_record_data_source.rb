@@ -5,6 +5,7 @@ module Listings::Sources
 
     def initialize(model)
       @items = model
+      @items_for_filter = @items.clone
       @model_instance = (if model.is_a?(ActiveRecord::Relation)
         model.klass
       else
@@ -22,10 +23,15 @@ module Listings::Sources
 
     def scope
       @items = yield @items
+      @items_for_filter = yield @items_for_filter
     end
 
     def sort_with_direction(field, direction)
       @items = field.sort @items, direction
+    end
+
+    def values_for_filter(field)
+      @items_for_filter.reorder(field.query_column).pluck("distinct #{field.query_column}").reject(&:nil?)
     end
 
     def search(fields, value)
@@ -44,6 +50,7 @@ module Listings::Sources
 
     def joins(relation)
       @items = @items.eager_load(relation)
+      @items_for_filter = @items_for_filter.joins(relation)
     end
 
     def build_field(path)

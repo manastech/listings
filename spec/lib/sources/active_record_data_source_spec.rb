@@ -16,9 +16,9 @@ RSpec.describe ActiveRecordDataSource do
   end
 
   context "simple active record model" do
-    TOTAL_COUNT = 40
+    let(:total_count) { 40 }
 
-    let!(:posts) { create_list(:post, TOTAL_COUNT) }
+    let!(:posts) { create_list(:post, total_count) }
     let(:title) { ds.build_field :title }
     let(:author) { ds.build_field :author }
 
@@ -31,7 +31,7 @@ RSpec.describe ActiveRecordDataSource do
 
       describe "items" do
         it "should return all items" do
-          expect(ds.items.count).to be(TOTAL_COUNT)
+          expect(ds.items.count).to be(total_count)
         end
 
         it "should enumerate all items" do
@@ -41,7 +41,7 @@ RSpec.describe ActiveRecordDataSource do
               c = c + 1
             end
             c
-          end).to be(TOTAL_COUNT)
+          end).to be(total_count)
         end
       end
 
@@ -55,7 +55,7 @@ RSpec.describe ActiveRecordDataSource do
         end
 
         it "should keep total_count" do
-          expect(ds.items.total_count).to be(TOTAL_COUNT)
+          expect(ds.items.total_count).to be(total_count)
         end
       end
 
@@ -73,7 +73,7 @@ RSpec.describe ActiveRecordDataSource do
         end
 
         it "should return scoped items" do
-          expect(ds.items.count).to be(TOTAL_COUNT / 2)
+          expect(ds.items.count).to be(total_count / 2)
         end
       end
 
@@ -111,6 +111,63 @@ RSpec.describe ActiveRecordDataSource do
           expect(ds.items.map { |e| title.value_for(e) }).to eq(posts.map(&:title).sort.reverse)
         end
       end
+
+      describe "values_for_filter" do
+        let(:total_count) { 0 } # skip default test posts
+
+        before(:each) do
+          create_list(:post, 10, author: 'author3')
+          create_list(:post, 10, author: 'author1')
+          create_list(:post, 10, author: 'author2')
+          create_list(:post, 10, author: nil)
+        end
+
+        shared_examples "project all authors" do
+          it "should matching values" do
+            expect(ds.values_for_filter(author)).to eq(['author1', 'author2', 'author3'])
+          end
+        end
+
+        context "without search" do
+          it_behaves_like "project all authors"
+        end
+
+        context "with scope" do
+          before(:each) do
+            ds.scope do |items|
+              items.where(author: ['author1', 'author2'])
+            end
+          end
+
+          it "should matching values" do
+            expect(ds.values_for_filter(author)).to eq(['author1', 'author2'])
+          end
+        end
+
+        context "with search" do
+          before(:each) do
+            ds.search([author], 'author2')
+          end
+
+          it_behaves_like "project all authors"
+        end
+
+        context "with search" do
+          before(:each) do
+            ds.paginate(1, 1)
+          end
+
+          it_behaves_like "project all authors"
+        end
+
+        context "with sort" do
+          before(:each) do
+            ds.sort(title)
+          end
+
+          it_behaves_like "project all authors"
+        end
+      end
     end
 
     context "using class" do
@@ -125,7 +182,8 @@ RSpec.describe ActiveRecordDataSource do
   end
 
   context "active record model with belongs_to" do
-    let!(:albums) { create_list(:album, 6) }
+    let(:total_count) { 6 } # skip default test posts
+    let!(:albums) { create_list(:album, total_count) }
     let!(:ds) { DataSource.for(Track) }
     let!(:track_title) { ds.build_field :title }
 
@@ -202,6 +260,36 @@ RSpec.describe ActiveRecordDataSource do
         it "should return matching items" do
           expect(ds.items.map { |e| album_name.value_for(e) }).to eq(all_track_albumns_name.sort.reverse)
         end
+      end
+
+      describe "values_for_filter" do
+        let(:total_count) { 0 } # skip default test albums
+
+        before(:each) do
+          create(:album, tracks_count: 5, name: 'album-name-1')
+          create(:album, tracks_count: 5, name: 'album-name-3')
+          create(:album, tracks_count: 5, name: 'album-name-2')
+          create(:album, tracks_count: 5, name: nil)
+        end
+
+        context "without search" do
+          it "should matching values" do
+            expect(ds.values_for_filter(album_name)).to eq(['album-name-1', 'album-name-2', 'album-name-3'])
+          end
+        end
+
+        context "with scope" do
+          before(:each) do
+            ds.scope do |items|
+              items.where("tracks.id % 2 = 0")
+            end
+          end
+
+          it "should matching values" do
+            expect(ds.values_for_filter(album_name)).to eq(['album-name-1', 'album-name-2', 'album-name-3'])
+          end
+        end
+
       end
     end
 
