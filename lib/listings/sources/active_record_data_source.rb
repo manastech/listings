@@ -13,11 +13,19 @@ module Listings::Sources
     end
 
     def items
-      @items
+      if @items.is_a?(Class)
+        @items.scoped
+      else
+        @items
+      end
     end
 
     def scope
       @items = yield @items
+    end
+
+    def sort_with_direction(field, direction)
+      @items = field.sort @items, direction
     end
 
     def search(fields, value)
@@ -75,6 +83,10 @@ module Listings::Sources
     def query_column
       "#{quote_table_name(data_source.items.table_name)}.#{quote_column_name(@attribute_name)}"
     end
+
+    def sort(items, direction)
+      items.reorder("#{query_column} #{direction}")
+    end
   end
 
   class ActiveRecordAssociationField < Field
@@ -100,6 +112,10 @@ module Listings::Sources
     def query_column
       association = data_source.model_instance.association(@path[0])
       "#{quote_table_name(association.reflection.table_name)}.#{quote_column_name(@path[1])}"
+    end
+
+    def sort(items, direction)
+      items.reorder("#{query_column} #{direction}")
     end
   end
 end

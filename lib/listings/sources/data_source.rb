@@ -1,5 +1,7 @@
 module Listings::Sources
   class DataSource
+    DESC = 'desc'
+    ASC = 'asc'
 
     # returns items for the data source
     # if +paginate+ is called, items will return just the current page
@@ -14,6 +16,13 @@ module Listings::Sources
 
     # applies a human friendly search to items among multiple fields
     def search(fields, value)
+    end
+
+    # applies sorting with specified direction to items
+    # subclasses should implement +sort_with_direction+ in order to leave
+    # default direction logic in +DataSource+
+    def sort(field, direction = ASC)
+      sort_with_direction(field, direction)
     end
 
     # apply pagination filter to +items+

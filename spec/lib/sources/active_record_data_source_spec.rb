@@ -33,6 +33,16 @@ RSpec.describe ActiveRecordDataSource do
         it "should return all items" do
           expect(ds.items.count).to be(TOTAL_COUNT)
         end
+
+        it "should enumerate all items" do
+          expect(begin
+            c = 0
+            ds.items.each do
+              c = c + 1
+            end
+            c
+          end).to be(TOTAL_COUNT)
+        end
       end
 
       describe "paginate" do
@@ -77,6 +87,28 @@ RSpec.describe ActiveRecordDataSource do
 
         it "should return matching items" do
           expect(ds.items.count).to be(20)
+        end
+      end
+
+      describe "sort" do
+        before(:each) do
+          expect(posts.map(&:title)).to_not eq(posts.map(&:title).sort)
+          ds.sort(title)
+        end
+
+        it "should return matching items" do
+          expect(ds.items.map { |e| title.value_for(e) }).to eq(posts.map(&:title).sort)
+        end
+      end
+
+      describe "sort desc" do
+        before(:each) do
+          expect(posts.map(&:title)).to_not eq(posts.map(&:title).sort.reverse)
+          ds.sort(title, DataSource::DESC)
+        end
+
+        it "should return matching items" do
+          expect(ds.items.map { |e| title.value_for(e) }).to eq(posts.map(&:title).sort.reverse)
         end
       end
     end
@@ -139,6 +171,36 @@ RSpec.describe ActiveRecordDataSource do
         it "should return matching items" do
           show_query ds
           expect(ds.items.count).to be(20)
+        end
+      end
+
+      describe "sort" do
+        def all_track_albumns_name
+          Track.all.map { |t| t.album.name }
+        end
+
+        before(:each) do
+          expect(all_track_albumns_name).to_not eq(all_track_albumns_name.sort)
+          ds.sort(album_name)
+        end
+
+        it "should return matching items" do
+          expect(ds.items.map { |e| album_name.value_for(e) }).to eq(all_track_albumns_name.sort)
+        end
+      end
+
+      describe "sort desc" do
+        def all_track_albumns_name
+          Track.all.map { |t| t.album.name }
+        end
+
+        before(:each) do
+          expect(all_track_albumns_name).to_not eq(all_track_albumns_name.sort.reverse)
+          ds.sort(album_name, DataSource::DESC)
+        end
+
+        it "should return matching items" do
+          expect(ds.items.map { |e| album_name.value_for(e) }).to eq(all_track_albumns_name.sort.reverse)
         end
       end
     end
