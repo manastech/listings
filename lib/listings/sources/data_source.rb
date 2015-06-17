@@ -12,6 +12,10 @@ module Listings::Sources
     def scope
     end
 
+    # applies a human friendly search to items among multiple fields
+    def search(fields, value)
+    end
+
     # apply pagination filter to +items+
     # items of the selected page can be obtained through +items+
     def paginate(page, page_size)

@@ -1,7 +1,15 @@
 module Listings::Sources
   class ActiveRecordDataSource < DataSource
+    attr_reader :model_instance
+    delegate :connection, to: :model_instance
+
     def initialize(model)
       @items = model
+      @model_instance = (if model.is_a?(ActiveRecord::Relation)
+        model.klass
+      else
+        model
+      end).new
     end
 
     def items
@@ -10,6 +18,16 @@ module Listings::Sources
 
     def scope
       @items = yield @items
+    end
+
+    def search(fields, value)
+      criteria = []
+      values = []
+      fields.each do |field|
+        criteria << "#{field.query_column} like ?"
+        values << "%#{value}%"
+      end
+      @items = @items.where(criteria.join(' or '), *values)
     end
 
     def paginate(page, page_size)
@@ -42,6 +60,9 @@ module Listings::Sources
   end
 
   class ActiveRecordField < Field
+    delegate :connection, to: :data_source
+    delegate :quote_table_name, :quote_column_name, to: :connection
+
     def initialize(attribute_name, data_source)
       super(data_source)
       @attribute_name = attribute_name
@@ -50,9 +71,16 @@ module Listings::Sources
     def value_for(item)
       item.send @attribute_name
     end
+
+    def query_column
+      "#{quote_table_name(data_source.items.table_name)}.#{quote_column_name(@attribute_name)}"
+    end
   end
 
   class ActiveRecordAssociationField < Field
+    delegate :connection, to: :data_source
+    delegate :quote_table_name, :quote_column_name, to: :connection
+
     def initialize(path, data_source)
       super(data_source)
       @path = path
@@ -67,6 +95,11 @@ module Listings::Sources
       end
 
       result
+    end
+
+    def query_column
+      association = data_source.model_instance.association(@path[0])
+      "#{quote_table_name(association.reflection.table_name)}.#{quote_column_name(@path[1])}"
     end
   end
 end
