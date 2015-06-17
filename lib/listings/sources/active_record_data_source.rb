@@ -1,7 +1,6 @@
 module Listings::Sources
   class ActiveRecordDataSource < DataSource
     attr_reader :model_instance
-    delegate :connection, to: :model_instance
 
     def initialize(model)
       @items = model
@@ -11,6 +10,10 @@ module Listings::Sources
       else
         model
       end).new
+    end
+
+    def connection
+      model_instance.class.connection
     end
 
     def items
