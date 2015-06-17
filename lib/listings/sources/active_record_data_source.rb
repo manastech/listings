@@ -61,10 +61,9 @@ module Listings::Sources
     end
 
     def build_field(path)
+      path = self.sanitaize_path(path)
       if path.is_a?(Array)
         ActiveRecordAssociationField.new(path, self)
-      elsif path.is_a?(Hash) && path.size == 1
-        ActiveRecordAssociationField.new(path.to_a.first, self)
       else
         ActiveRecordField.new(path, self)
       end
@@ -121,6 +120,7 @@ module Listings::Sources
     def value_for(item)
       result = item
       @path.each do |attribute_name|
+        # TODO deal with nils
         result = result.send attribute_name
       end
 

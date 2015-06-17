@@ -19,7 +19,7 @@ FactoryGirl.define do
     end
 
     after(:build) do |album, evaluator|
-      build_list(:object_track, evaluator.tracks_count, album: album)
+      album.tracks = build_list(:object_track, evaluator.tracks_count, album: album)
     end
   end
 end

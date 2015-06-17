@@ -47,6 +47,16 @@ module Listings::Sources
     def self.for(model)
       raise "Unable to create datasource for #{model}"
     end
+
+    def sanitaize_path(path)
+      if path.is_a?(Array)
+        path
+      elsif path.is_a?(Hash) && path.size == 1
+        path.to_a.first
+      else
+        path
+      end
+    end
   end
 
   class Field
