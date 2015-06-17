@@ -8,6 +8,10 @@ module Listings::Sources
       @items
     end
 
+    def scope
+      @items = yield @items
+    end
+
     def paginate(page, page_size)
       @items = @items.page(page).per(page_size)
     end

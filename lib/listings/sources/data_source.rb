@@ -6,6 +6,12 @@ module Listings::Sources
     def items
     end
 
+    # applies filter to the items
+    # scope will be called with a block with the ongoing items
+    # the result of the block is used as the narrowed items
+    def scope
+    end
+
     # apply pagination filter to +items+
     # items of the selected page can be obtained through +items+
     def paginate(page, page_size)

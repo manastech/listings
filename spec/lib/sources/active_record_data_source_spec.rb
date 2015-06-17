@@ -40,6 +40,18 @@ RSpec.describe ActiveRecordDataSource do
           expect(title.value_for(ds.items.first)).to eq(posts.first.title)
         end
       end
+
+      describe "scope" do
+        before(:each) do
+          ds.scope do |items|
+            items.even
+          end
+        end
+
+        it "should return scoped items" do
+          expect(ds.items.count).to be(TOTAL_COUNT / 2)
+        end
+      end
     end
 
     context "using class" do
@@ -54,7 +66,7 @@ RSpec.describe ActiveRecordDataSource do
   end
 
   context "active record model with belongs_to" do
-    let!(:albums) { create_list(:album, 5) }
+    let!(:albums) { create_list(:album, 6) }
     let(:ds) { DataSource.for(Track) }
 
     shared_examples "listing with projected values" do
@@ -70,6 +82,18 @@ RSpec.describe ActiveRecordDataSource do
           album_id.value_for(ds.items.first)
         end).to eq(1)
         # ActiveRecord::Base.logger = nil
+      end
+
+      describe "scope" do
+        before(:each) do
+          ds.scope do |items|
+            items.even
+          end
+        end
+
+        it "should return scoped items" do
+          expect(ds.items.count).to be(Track.count / 2)
+        end
       end
     end
 
