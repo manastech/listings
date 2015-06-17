@@ -31,6 +31,16 @@ RSpec.describe ObjectDataSource do
         expect(ds).to be_a(ObjectDataSource)
       end
 
+      describe "field" do
+        let(:tracks) { [] }
+        before(:each) {
+          add_tracks build(:object_track, album: nil)
+        }
+        it "should deal with intermediate nils" do
+          expect(album_name.value_for(ds.items.first)).to be_nil
+        end
+      end
+
       describe "items" do
         it "should list all" do
           expect(ds.items.count).to be(tracks.count)
@@ -200,7 +210,7 @@ RSpec.describe ObjectDataSource do
   end
 
   context "using array of hash" do
-    let(:ds) { DataSource.for(tracks.map{ |t| {title: t.title, album: {name: t.album.name } } }) }
+    let(:ds) { DataSource.for(tracks.map(&:to_h)) }
     let(:album_name) { nil }
 
     context "and hash like fields" do

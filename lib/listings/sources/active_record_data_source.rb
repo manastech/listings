@@ -120,8 +120,7 @@ module Listings::Sources
     def value_for(item)
       result = item
       @path.each do |attribute_name|
-        # TODO deal with nils
-        result = result.send attribute_name
+        result = result.try { |o| o.send(attribute_name) }
       end
 
       result

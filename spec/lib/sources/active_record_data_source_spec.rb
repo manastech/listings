@@ -213,6 +213,11 @@ RSpec.describe ActiveRecordDataSource do
         expect(album_name.value_for(ds.items.first)).to eq(Track.first.album.name)
       end
 
+      it "should deal with intermediate nils" do
+        track_without_album = create(:track, album: nil)
+        expect(album_name.value_for(track_without_album)).to be_nil
+      end
+
       it "should perform a eager_load" do
         show_query ds
       end

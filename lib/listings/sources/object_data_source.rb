@@ -71,15 +71,12 @@ module Listings::Sources
 
     def value_for(item)
       @path.inject(item) do |obj, attribute|
-        # TODO deal with nils
-        if obj.is_a?(Hash) && obj.key?(attribute)
+        if obj.nil?
+          nil
+        elsif obj.is_a?(Hash) && obj.key?(attribute)
           obj[attribute]
         else
-          begin
-            obj.send attribute
-          rescue
-            binding.pry
-          end
+          obj.send attribute
         end
       end
     end
