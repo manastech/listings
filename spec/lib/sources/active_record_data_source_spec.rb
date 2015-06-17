@@ -56,10 +56,8 @@ RSpec.describe ActiveRecordDataSource do
   context "active record model with belongs_to" do
     let!(:albums) { create_list(:album, 5) }
     let(:ds) { DataSource.for(Track) }
-    let!(:album_name) { ds.build_field [:album, :name] }
-    let!(:album_id) { ds.build_field [:album, :id] }
 
-    describe "field" do
+    shared_examples "listing with projected values" do
       it "should project attribute value" do
         expect(album_name.value_for(ds.items.first)).to eq(Track.first.album.name)
       end
@@ -73,6 +71,20 @@ RSpec.describe ActiveRecordDataSource do
         end).to eq(1)
         # ActiveRecord::Base.logger = nil
       end
+    end
+
+    context "using array as path" do
+      let!(:album_name) { ds.build_field [:album, :name] }
+      let!(:album_id) { ds.build_field [:album, :id] }
+
+      it_behaves_like "listing with projected values"
+    end
+
+    context "hash as path" do
+      let!(:album_name) { ds.build_field album: :name }
+      let!(:album_id) { ds.build_field album: :id }
+
+      it_behaves_like "listing with projected values"
     end
   end
 end

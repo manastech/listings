@@ -17,8 +17,10 @@ module Listings::Sources
     end
 
     def build_field(path)
-      if path.is_a? Array
+      if path.is_a?(Array)
         ActiveRecordAssociationField.new(path, self)
+      elsif path.is_a?(Hash) && path.size == 1
+        ActiveRecordAssociationField.new(path.to_a.first, self)
       else
         ActiveRecordField.new(path, self)
       end
