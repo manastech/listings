@@ -74,7 +74,11 @@ module Listings::Sources
   class DataSource
     class << self
       def for_with_active_record(model)
-        ActiveRecordDataSource.new(model)
+        if (model.is_a?(Class) && model.ancestors.include?(ActiveRecord::Base)) || model.is_a?(ActiveRecord::Relation)
+          ActiveRecordDataSource.new(model)
+        else
+          for_without_active_record(model)
+        end
       end
 
       alias_method_chain :for, :active_record

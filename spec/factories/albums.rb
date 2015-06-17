@@ -11,4 +11,15 @@ FactoryGirl.define do
     end
   end
 
+  factory :object_album do
+    name
+
+    transient do
+      tracks_count 5
+    end
+
+    after(:build) do |album, evaluator|
+      build_list(:object_track, evaluator.tracks_count, album: album)
+    end
+  end
 end

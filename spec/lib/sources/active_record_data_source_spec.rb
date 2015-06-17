@@ -22,6 +22,12 @@ RSpec.describe ActiveRecordDataSource do
     let(:title) { ds.build_field :title }
     let(:author) { ds.build_field :author }
 
+    shared_examples "project all authors" do
+      it "should matching values" do
+        expect(ds.values_for_filter(author)).to eq(['author1', 'author2', 'author3'])
+      end
+    end
+
     shared_examples "activerecord datasource with all item" do
       describe "DataSource factory" do
         it "should create from with class name" do
@@ -46,12 +52,12 @@ RSpec.describe ActiveRecordDataSource do
       end
 
       describe "paginate" do
-        PAGE_SIZE = 5
+        let(:page_size) { 5 }
 
-        before(:each) { ds.paginate(2, PAGE_SIZE) }
+        before(:each) { ds.paginate(2, page_size) }
 
         it "should get only paged items" do
-          expect(ds.items.count).to be(PAGE_SIZE)
+          expect(ds.items.count).to be(page_size)
         end
 
         it "should keep total_count" do
@@ -133,12 +139,6 @@ RSpec.describe ActiveRecordDataSource do
           create_list(:post, 10, author: 'author1')
           create_list(:post, 10, author: 'author2')
           create_list(:post, 10, author: nil)
-        end
-
-        shared_examples "project all authors" do
-          it "should matching values" do
-            expect(ds.values_for_filter(author)).to eq(['author1', 'author2', 'author3'])
-          end
         end
 
         context "without search" do
