@@ -23,15 +23,7 @@ module Listings
     end
 
     def sortable?
-      @listing.sortable? && column_description.sortable? && (is_field? || column_description.sortable_property_is_expression?)
-    end
-
-    def sort_by
-      if column_description.sortable_property_is_expression?
-        column_description.props[:sortable]
-      else
-        name
-      end
+      listing.sortable? && column_description.sortable?
     end
 
     def cell_css_class
