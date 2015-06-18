@@ -2,10 +2,12 @@ module Listings
   class BaseFieldDescriptor
     attr_reader :path
     attr_reader :props
+    attr_reader :proc
 
-    def initialize(path, props)
+    def initialize(path, props, proc)
       @path = path
       @props = props
+      @proc = proc
     end
 
     def build_field(listing)

@@ -155,7 +155,7 @@ module Listings
 
       def filter(path = '', props = {}, &proc)
         path, props = fix_path_props(path, props)
-        filters << FilterDescriptor.new(path, props)
+        filters << FilterDescriptor.new(path, props, proc)
       end
     end
   end

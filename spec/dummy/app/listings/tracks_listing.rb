@@ -3,7 +3,9 @@ class TracksListing < Listings::Base
   model Track
 
   filter album: :name
-  filter album: :id, title: 'The Album Id'
+  filter album: :id, title: 'The Album Id' do |value|
+    "#{value}!"
+  end
 
   column :order
   column :title, searchable: true

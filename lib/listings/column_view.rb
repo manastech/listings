@@ -8,11 +8,10 @@ module Listings
       @field_description
     end
 
-    # TODO move to base_field_view
     def value_for(model)
-      if column_description.proc
+      if @field_description.proc
         # TODO should pass @field.value_for(model) to simplify formatting
-        listing.instance_exec model, &column_description.proc
+        listing.instance_exec model, &@field_description.proc
       else
         field.value_for(model)
       end

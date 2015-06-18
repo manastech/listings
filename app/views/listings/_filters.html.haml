@@ -6,6 +6,6 @@
       - filter_view.values.each do |value|
         %li.filter
           %a{:href => '#', :'data-key' => filter_view.key, :'data-value' => value}
-            = value
+            = filter_view.value_for(value)
             %i.icon-remove
 
