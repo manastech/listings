@@ -39,7 +39,7 @@ end
 
 ## Usage
 
-Create listings files `app/listings/{{name}}_listing.rb`. See [listings samples](#Samples) and the [DSL](#Listings DSL)
+Create listings files `app/listings/{{name}}_listing.rb`. See [listings samples](#samples) and the [DSL](#listings-dsl)
 
 Use `render_listing` helper to include the listing by its `name`.
 
