@@ -39,7 +39,7 @@ end
 
 ## Usage
 
-Create listings files `app/listings/{{name}}_listing.rb`. See [listings samples](#Samples) and the [dsl](#Listings dsl)
+Create listings files `app/listings/{{name}}_listing.rb`. See [listings samples](#Samples) and the [DSL](#Listings DSL)
 
 Use `render_listing` helper to include the listing by its `name`.
 
@@ -52,18 +52,18 @@ end
 ```
 
 ```
-= render_listing :tracks_courses
+= render_listing :tracks
 ```
 
 ## Samples
 
 For a Track/Album model:
 
-```
+```ruby
 class Track < ActiveRecord::Base
   belongs_to :album
   attr_accessible :order, :title
-  
+
   scope :favorites, -> { ... }
 end
 
@@ -73,12 +73,12 @@ class Album < ActiveRecord::Base
 end
 ```
 
-a listing with 
+a listing with
 
 ```ruby
 class TracksListing < Listings::Base
   model Track
-  
+
   scope :all
   scope :favorites
 
@@ -90,46 +90,46 @@ class TracksListing < Listings::Base
 end
 ```
 
-## Listings dsl
+## Listings DSL
 
-A listing inherits from `Listings::Base` and defines de following dsl
+A listing inherits from `Listings::Base` and defines de following DSL
 
 ### model
 
-`model` can me used with just and `ActiveRecord` class:
+`model` can be used with just an `ActiveRecord` class
 
 ```ruby
   model Track
 ```
 
-or with a block to perform further operations.
+or with a block to perform further operations
 
 ```ruby
   model do
-  	Tracks.favorites
+    Tracks.favorites
   end
 ```
 
-or generata an array of objects or hashes
+or generate an array of objects or hashes
 
 ```ruby
   model do
-  	[
-  	{title: "Tishomingo Blues", album: {name: "The Royal J's" }},
-  	{title: "Save me for later", album: {name: "Me 'n' Mabel" }}
-  	]
+    [
+      {title: "Tishomingo Blues", album: {name: "The Royal J's" }},
+      {title: "Save me for later", album: {name: "Me 'n' Mabel" }}
+    ]
   end
 ```
 
 ### column
 
-Declaring a `column` with a symbol renders that attribute. 
+Declaring a `column` with a symbol renders that attribute
 
 ```ruby
   column :title
 ```
 
-`column` accept options. By default `{ searchable: false, sortable: true }`
+`column` accepts options. By default `{ searchable: false, sortable: true }`
 
 Adding `searchable: true` will make a search box appear and perform a search depending on the datasource logic (`field LIKE '%pattern%'` for ActiveRecord datasource or `include?` for Object datasource)
 
@@ -137,7 +137,7 @@ Adding `searchable: true` will make a search box appear and perform a search dep
   column :title, searchable: true
 ```
 
-`column` can traverse object path and `belongs_to` relations.
+`column` can traverse object path and `belongs_to` relations
 
 ```ruby
   column album: :name
@@ -149,21 +149,91 @@ Or
   column [:album, :name]
 ```
 
-`column` also accepts a block to alter the rendering of the field.
+`column` also accepts a block to alter the rendering of the field
 
 ```ruby
   column album: :name do |track, album_name|
-  	album_name.titleize
+    album_name.titleize
   end
 ```
 
-### scopes
+`column` also accepts a `title:` option
+
+```ruby
+  column album: :name, title: 'Album'
+```
+
+### scope
+
+Declaring a `scope` with a symbol with allow user to show only records matching the scope in the ActiveRecord class
+
+```ruby
+  scope :favorites
+```
+
+You can change the displayed name but yet, using the declared scope
+
+```ruby
+  scope 'My favorites', :favorites
+```
+
+If you don't want to pollute the model with scopes, or you need to filter items with a custome logic use a block
+
+```ruby
+  scope 'My favorites', :favorites, lambda { |items| items.where(...) }
+```
 
 ### filter
 
-### paginate
+Declaring a `filter` will display a unique list of values of the field and allow the user to filter on exact match
+
+```ruby
+  filter album: :name
+```
+
+It supports `title:` and a block
+
+```ruby
+  filter album: :name, title: 'Album' do |album_name|
+    album_name.titleize
+  end
+```
+
+### paginates_per
+
+Page size can be specified by `paginates_per`
+
+```ruby
+  paginates_per 40
+```
+
+And you can disable pagination
+
+```ruby
+  paginates_per :none
+```
 
 ### css
+
+`css_class` ca specify a css class to be apply to the listing
+
+```ruby
+  css_class 'my-custom-style'
+```
+
+`row_style` can specigy a css class to apply to each row depending on the item it is rendering
+
+```ruby
+  row_style do |track|
+    'favorite-track' if track.favorite?
+  end
+```
+
+A `column` also support a `class` option to specify a css class to be applied on every table cell
+
+```ruby
+  column :title, class: 'title-style'
+```
 
 ## i18n
 
