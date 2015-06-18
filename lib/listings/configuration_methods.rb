@@ -30,12 +30,12 @@ module Listings
         self.class.export_formats
       end
 
-      def is_sortable?
+      def sortable?
         opt = self.class.sortable_options
         if opt.nil?
           true
         else
-          if opt.length == 1 && !!opt.first == opt.first
+          if opt.length == 1
             opt.first
           else
             true
@@ -124,6 +124,8 @@ module Listings
         end
       end
 
+      # call `sortable false` make listing non sorted
+      # default is `sortable true`
       def sortable(*options)
         @sortable_options = options
       end

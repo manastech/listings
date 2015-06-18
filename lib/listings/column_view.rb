@@ -23,7 +23,7 @@ module Listings
     end
 
     def sortable?
-      @listing.is_sortable? && column_description.sortable? && (is_field? || column_description.sortable_property_is_expression?)
+      @listing.sortable? && column_description.sortable? && (is_field? || column_description.sortable_property_is_expression?)
     end
 
     def sort_by
