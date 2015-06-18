@@ -83,5 +83,9 @@ module Listings::Sources
     def key
       @path.join('_')
     end
+
+    def human_name
+      @path.join(' ')
+    end
   end
 end

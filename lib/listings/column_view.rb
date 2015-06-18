@@ -19,11 +19,11 @@ module Listings
     end
 
     def searchable?
-      column_description.searchable? && is_model_column?
+      column_description.searchable? && is_field?
     end
 
     def sortable?
-      @listing.is_sortable? && column_description.sortable? && (self.is_model_column? || column_description.sortable_property_is_expression?)
+      @listing.is_sortable? && column_description.sortable? && (is_field? || column_description.sortable_property_is_expression?)
     end
 
     def sort_by

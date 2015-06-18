@@ -113,6 +113,10 @@ module Listings::Sources
     def key
       @attribute_name.to_s
     end
+
+    def human_name
+      data_source.model_instance.class.human_attribute_name(@attribute_name)
+    end
   end
 
   class ActiveRecordAssociationField < Field
@@ -146,6 +150,10 @@ module Listings::Sources
 
     def key
       @path.join('_')
+    end
+
+    def human_name
+      @path.join(' ').titleize
     end
   end
 end

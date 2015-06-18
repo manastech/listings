@@ -151,6 +151,10 @@ module Listings
       self.filters.find { |c| c.key == key }
     end
 
+    def human_name(field)
+      field.human_name
+    end
+
     def searchable?
       self.columns.any? &:searchable?
     end
