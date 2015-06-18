@@ -101,8 +101,19 @@ module Listings
         @columns ||= []
       end
 
-      def column(name = '', props = {}, &proc)
-        columns << ColumnDescriptor.new(name, props, proc)
+      def column(path = '', props = {}, &proc)
+        path, props = fix_path_props(path, props)
+        columns << ColumnDescriptor.new(path, props, proc)
+      end
+
+      def fix_path_props(path, props)
+        if path.is_a?(Hash) && path.size > 1
+          props = props.merge(path)
+          path = Hash[[path.first]]
+          props.except!(path.first.first)
+        end
+
+        [path, props]
       end
 
       def selectable #(column = :id)
@@ -142,8 +153,9 @@ module Listings
         @filters ||= []
       end
 
-      def filter(path)
-        filters << FilterDescriptor.new(path)
+      def filter(path = '', props = {}, &proc)
+        path, props = fix_path_props(path, props)
+        filters << FilterDescriptor.new(path, props)
       end
     end
   end

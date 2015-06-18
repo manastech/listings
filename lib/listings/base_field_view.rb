@@ -18,6 +18,7 @@ module Listings
     end
 
     def human_name
+      return @field_description.props[:title] if @field_description.props[:title]
       return path if path.is_a?(String)
 
       I18n.t("listings.headers.#{listing.name}.#{key}", default: listing.human_name(field))

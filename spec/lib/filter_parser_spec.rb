@@ -5,6 +5,8 @@ describe Listings do
     assert_parse_filter "author:me", {author: "me"}, ""
     assert_parse_filter "Author:me", {author: "me"}, ""
 
+    assert_parse_filter "101", {}, "101"
+
     assert_parse_filter "author:me category:foo", {author: "me", category: "foo"}, ""
     assert_parse_filter "   author:  me    category:  foo", {author: "me", category: "foo"}, ""
     assert_parse_filter "   author:  'me'    category:  foo", {author: "me", category: "foo"}, ""

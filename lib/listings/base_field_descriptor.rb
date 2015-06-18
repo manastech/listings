@@ -1,9 +1,11 @@
 module Listings
   class BaseFieldDescriptor
     attr_reader :path
+    attr_reader :props
 
-    def initialize(path)
+    def initialize(path, props)
       @path = path
+      @props = props
     end
 
     def build_field(listing)

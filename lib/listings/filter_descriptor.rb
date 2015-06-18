@@ -1,6 +1,6 @@
 module Listings
   class FilterDescriptor < BaseFieldDescriptor
-    def initialize(path)
+    def initialize(path, props)
       super
     end
   end
