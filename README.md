@@ -9,6 +9,24 @@ The listings created support when approriate sorting, pagination, scoping, searc
 
 A listing data source have built in support for ActiveRecord and Arrays.
 
+* [Listings](#listings)
+    * [Download](#download)
+    * [Configuration](#configuration)
+    * [Usage](#usage)
+    * [Samples](#samples)
+    * [Listings DSL](#listings-dsl)
+      * [model](#model)
+      * [column](#column)
+      * [scope](#scope)
+      * [filter](#filter)
+      * [paginates_per](#paginates_per)
+      * [export](#export)
+      * [css](#css)
+    * [i18n](#i18n)
+    * [Javascript api](#javascript-api)
+    * [Under the hood](#under-the-hood)
+    * [License](#license)
+
 ## Download
 
 Add `listings` to your Gemfile:
