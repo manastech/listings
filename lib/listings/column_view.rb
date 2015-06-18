@@ -1,12 +1,20 @@
 module Listings
   class ColumnView
+    attr_reader :field
+
     def initialize(listing, column_description)
       @listing = listing
       @column_description = column_description
+      @field = listing.data_source.build_field(column_description.name)
     end
 
     def value_for(model)
-      @column_description.value_for(@listing, model)
+      if @column_description.proc
+        # TODO should pass @field.value_for(model) to simplify formatting
+        @listing.instance_exec model, &@column_description.proc
+      else
+        @field.value_for(model)
+      end
     end
 
     def human_name

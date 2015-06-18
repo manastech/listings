@@ -4,12 +4,13 @@ module Listings::Sources
 
     def initialize(model)
       @items = model
-      @items_for_filter = @items.clone
-      @model_instance = (if model.is_a?(ActiveRecord::Relation)
-        model.klass
+      if model.is_a?(ActiveRecord::Relation)
+        @items_for_filter = model.clone
+        @model_instance = model.klass.new
       else
-        model
-      end).new
+        @items_for_filter = model
+        @model_instance = model.new
+      end
     end
 
     def connection

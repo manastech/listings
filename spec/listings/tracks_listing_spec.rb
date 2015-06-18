@@ -4,11 +4,11 @@ RSpec.describe TracksListing, type: :listing do
 
     let(:listing) { query_listing :tracks }
 
-    pending "should list all" do
+    it "should list all" do
       expect(listing.items.count).to eq(1)
     end
 
-    pending "can be rendered" do
+    it "can be rendered" do
       render_listing :tracks
     end
   end

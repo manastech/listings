@@ -15,6 +15,9 @@ module Listings
     attr_accessor :search_criteria
     attr_accessor :search_filters
 
+    attr_reader :data_source
+    delegate :items, to: :data_source
+
     def initialize
       @page_size = self.class.page_size
     end
@@ -63,67 +66,62 @@ module Listings
       return text
     end
 
-    def filter_items(params, items)
+    def filter_items(params)
+      columns # prepare columns
+
+      filter_fields = {}
+      if filterable?
+        filters.each do |v|
+          filter_fields[v] = data_source.build_field(v)
+        end
+      end
+
       self.page = params[param_page] || 1
       self.scope = scope_by_name(params[param_scope])
       self.search = params[param_search]
       parse_search
 
-      items = paginatable(scope.apply(self, items)) unless scope.nil?
+      unless scope.nil?
+        data_source.scope do |items|
+          scope.apply(self, items)
+        end
+      end
 
       if search_criteria.present? && self.searchable?
-        criteria = []
-        values = []
-        self.columns.select(&:searchable?).each do |col|
-          criteria << "#{model_class.table_name}.#{col.name} like ?"
-          values << "%#{search_criteria}%"
-        end
-        items = items.where(criteria.join(' or '), *values)
+        search_fields = self.columns.select(&:searchable?).map &:field
+        data_source.search(search_fields, search_criteria)
       end
 
       if filterable?
-        # pluck filters values before applying filters/pagination/sorting
         self.filter_values = {}
         filters.each do |v|
-          self.filter_values[v] = items.pluck("distinct #{v}").reject(&:nil?)
+          self.filter_values[v] = data_source.values_for_filter(filter_fields[v])
         end
 
         self.search_filters.each do |key, filter_value|
-          items = items.where("#{model_class.table_name}.#{key} = ?", filter_value)
+          data_source.filter(filter_fields[key], filter_value)
         end
       end
 
       if params.include?(param_sort_by)
         sort_col = column_with_name(params[param_sort_by])
         sort_col.sort = params[param_sort_direction]
-        items = items.reorder("#{sort_col.sort_by} #{params[param_sort_direction]}")
+        data_source.sort(sort_col.field, params[param_sort_direction])
       end
 
       if paginated?
-        items = items.page(page).per(page_size)
+        data_source.paginate(page, page_size)
       end
 
-      if items.is_a?(Class)
-        items = items.all
-      end
-
-      items
+      self.items
     end
 
     def query_items(params)
       @params = params
-      items = self.model_class
+      @data_source = Sources::DataSource.for(self.model_class)
       @has_active_model_source = items.respond_to? :human_attribute_name
 
-      self.items = filter_items(self.scoped_params, paginatable(items))
-    end
-
-    def paginatable(array_or_model)
-      if array_or_model.is_a?(Array) && paginated? && !array_or_model.respond_to?(:page)
-        Kaminari.paginate_array(array_or_model)
-      else
-        array_or_model
-      end
+      filter_items(self.scoped_params)
     end
 
     def has_active_model_source?

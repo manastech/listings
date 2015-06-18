@@ -2,22 +2,13 @@ module Listings
   class ColumnDescriptor
     attr_reader :name
     attr_reader :props
+    attr_reader :proc
 
     def initialize(listing_class, name, props = {}, proc)
       @listing_class = listing_class
       @name = name
       @props = props.reverse_merge! searchable: false, sortable: true
       @proc = proc
-    end
-
-    def value_for(listing, model)
-      if @proc
-        listing.instance_exec model, &@proc
-      elsif model.is_a?(Hash)
-        model[name]
-      else
-        model.send(name)
-      end
     end
 
     def human_name(listing)

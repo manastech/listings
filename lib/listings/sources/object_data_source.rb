@@ -10,8 +10,7 @@ module Listings::Sources
     end
 
     def paginate(page, page_size)
-      @items = Kaminari.paginate_array(@items)
-      @items = @items.page(page).per(page_size)
+      @items = Kaminari.paginate_array(@items).page(page).per(page_size)
     end
 
     def scope

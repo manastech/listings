@@ -10,6 +10,7 @@ class ArrayListing < Listings::Base
     end
   end
 
+  # paginates_per :none
   paginates_per 10
 
   column 'Num' do |n|

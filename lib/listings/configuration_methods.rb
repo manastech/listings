@@ -9,7 +9,6 @@ module Listings
     included do
       attr_accessor :page
       attr_accessor :scope
-      attr_accessor :items
       attr_accessor :search
       attr_accessor :page_size
       attr_accessor :filter_values
