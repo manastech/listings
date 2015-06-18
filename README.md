@@ -106,7 +106,7 @@ or with a block to perform further operations
 
 ```ruby
   model do
-    Tracks.favorites
+    Track.favorites
   end
 ```
 
@@ -226,6 +226,26 @@ And you can disable pagination
   paginates_per :none
 ```
 
+### export
+
+Declare which formats you want to be available for export. Notice that paging will be ignored for the export.
+
+```ruby
+  export :csv, :xls
+```
+
+Sometimes the columns should be rendered different for the export a `format` property is available and will be `:html`, `:csv` or `:xls`.
+
+```ruby
+  column :email do |user, email|
+    if format == :html
+      mail_to email
+    else
+      email
+    end
+  end
+```
+
 ### css
 
 `css_class` ca specify a css class to be apply to the listing
@@ -266,7 +286,20 @@ es:
 ```
 
 ## Javascript api
-TBD
+
+The listing content can be reloaded preserving current sort, scope, search, filter and page.
+
+To reload the listings rendered by
+
+```
+= render_listing :tracks
+```
+
+use
+
+```javascript
+refreshListing('tracks')
+```
 
 ## Under the hood
 
