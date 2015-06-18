@@ -1,5 +1,0 @@
-[![Build Status](https://travis-ci.org/manastech/listings.svg?branch=master)](https://travis-ci.org/manastech/listings)
-
-= Listings
-
-This project rocks and uses MIT-LICENSE.
