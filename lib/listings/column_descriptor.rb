@@ -9,7 +9,7 @@ module Listings
     end
 
     def searchable?
-      @props[:searchable]
+      @props[:searchable] && is_field?
     end
 
     def sortable?

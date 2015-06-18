@@ -19,7 +19,7 @@ module Listings
     end
 
     def searchable?
-      column_description.searchable? && is_field?
+      column_description.searchable?
     end
 
     def sortable?
@@ -33,7 +33,7 @@ module Listings
     attr_accessor :sort
 
     def next_sort_direction
-      sort == 'asc' ? 'desc' : 'asc'
+      self.sort == Sources::DataSource::ASC ? Sources::DataSource::DESC : Sources::DataSource::ASC
     end
   end
 end
