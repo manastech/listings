@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
   s.version     = Listings::VERSION
   s.authors     = ["Brian J. Cardiff"]
   s.email       = ["bcardiff@gmail.com"]
-  s.homepage    = "http://github.com/manastech/listings"
+  s.homepage    = "https://github.com/manastech/listings"
   s.summary     = "Simple creation of listings in rails applications."
-  s.description = "DSL to create listings for active-record models."
+  s.description = "Simple creation of listings in rails applications."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["{test,spec}/**/*"]
