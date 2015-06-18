@@ -7,4 +7,7 @@ class WelcomeController < ApplicationController
 
   def hash
   end
+
+  def tracks
+  end
 end

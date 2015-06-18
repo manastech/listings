@@ -9,7 +9,7 @@
         - listing.columns.each do |col|
           %th{'class' => "#{'sortable ' + (col.sort || '') if col.sortable?}" }
             - if col.sortable?
-              = link_to col.human_name, listing.url_for_sort(col.name, col.next_sort_direction), remote: true
+              = link_to col.human_name, listing.url_for_sort(col.key, col.next_sort_direction), remote: true
             - else
               = col.human_name
 
