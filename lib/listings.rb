@@ -1,5 +1,6 @@
 require 'kaminari'
 require 'bootstrap-kaminari-views'
+require 'listings/sources'
 require 'listings/configuration'
 require 'listings/kaminari_helpers_tag_patch'
 require 'listings/base'

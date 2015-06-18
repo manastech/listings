@@ -1,6 +1,10 @@
 require 'listings/scope_descriptor'
+require 'listings/base_field_descriptor'
+require 'listings/base_field_view'
 require 'listings/column_descriptor'
 require 'listings/column_view'
+require 'listings/filter_descriptor'
+require 'listings/filter_view'
 
 module Listings
   module ConfigurationMethods
@@ -9,10 +13,8 @@ module Listings
     included do
       attr_accessor :page
       attr_accessor :scope
-      attr_accessor :items
       attr_accessor :search
       attr_accessor :page_size
-      attr_accessor :filter_values
 
       def scopes
         @scopes ||= self.class.process_scopes
@@ -28,12 +30,12 @@ module Listings
         self.class.export_formats
       end
 
-      def is_sortable?
+      def sortable?
         opt = self.class.sortable_options
         if opt.nil?
           true
         else
-          if opt.length == 1 && !!opt.first == opt.first
+          if opt.length == 1
             opt.first
           else
             true
@@ -50,7 +52,9 @@ module Listings
       end
 
       def filters
-        self.class.filters
+        @filters ||= self.class.filters.map do |fd|
+          FilterView.new(self, fd)
+        end
       end
     end
 
@@ -83,7 +87,6 @@ module Listings
         @scopes = scopes.select{ |s| !s.deferred? }
       end
 
-
       def model(model_class = nil, &proc)
         if !model_class.nil?
           self.send(:define_method, 'model_class') do
@@ -98,8 +101,19 @@ module Listings
         @columns ||= []
       end
 
-      def column(name = '', props = {}, &proc)
-        columns << ColumnDescriptor.new(self, name, props, proc)
+      def column(path = '', props = {}, &proc)
+        path, props = fix_path_props(path, props)
+        columns << ColumnDescriptor.new(path, props, proc)
+      end
+
+      def fix_path_props(path, props)
+        if path.is_a?(Hash) && path.size > 1
+          props = props.merge(path)
+          path = Hash[[path.first]]
+          props.except!(path.first.first)
+        end
+
+        [path, props]
       end
 
       def selectable #(column = :id)
@@ -121,6 +135,8 @@ module Listings
         end
       end
 
+      # call `sortable false` make listing non sorted
+      # default is `sortable true`
       def sortable(*options)
         @sortable_options = options
       end
@@ -137,8 +153,9 @@ module Listings
         @filters ||= []
       end
 
-      def filter name
-        filters << name
+      def filter(path = '', props = {}, &proc)
+        path, props = fix_path_props(path, props)
+        filters << FilterDescriptor.new(path, props, proc)
       end
     end
   end

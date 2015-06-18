@@ -147,7 +147,7 @@ $(function(){
   });
 
   function searchEscape(value) {
-    if (value == /\w+/) {
+    if (value.toString().indexOf(" ") == -1) {
       return value;
     } else if (value.indexOf("'") > -1) {
       return '"' + value + '"';

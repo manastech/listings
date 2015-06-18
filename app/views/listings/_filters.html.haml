@@ -1,11 +1,11 @@
 .filters
-  - listing.filter_values.each do |k,v|
+  - listing.filters.each do |filter_view|
     %ul.nav.nav-list.well
       %li.nav-header
-        = "Filter by #{k}"
-      - v.each do |x|
+        = "Filter by #{filter_view.human_name}"
+      - filter_view.values.each do |value|
         %li.filter
-          %a{:href => '#', :'data-key' => k, :'data-value' => x}
-            = x
+          %a{:href => '#', :'data-key' => filter_view.key, :'data-value' => value}
+            = filter_view.value_for(value)
             %i.icon-remove
 

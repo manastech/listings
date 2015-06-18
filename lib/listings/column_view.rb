@@ -1,50 +1,41 @@
 module Listings
-  class ColumnView
+  class ColumnView < BaseFieldView
     def initialize(listing, column_description)
-      @listing = listing
-      @column_description = column_description
+      super
+    end
+
+    def column_description
+      @field_description
     end
 
     def value_for(model)
-      @column_description.value_for(@listing, model)
-    end
-
-    def human_name
-      @column_description.human_name(@listing)
-    end
-
-    def searchable?
-      @column_description.searchable?(@listing)
-    end
-
-    def is_model_column?
-      @column_description.is_model_column?(@listing)
-    end
-
-    def name
-      @column_description.name
-    end
-
-    def sortable?
-      @listing.is_sortable? && @column_description.sortable? && (self.is_model_column? || @column_description.sortable_property_is_expression?)
-    end
-
-    def sort_by
-      if @column_description.sortable_property_is_expression?
-        @column_description.props[:sortable]
+      if @field_description.proc
+        if is_field?
+          listing.instance_exec model, field.value_for(model), &@field_description.proc
+        else
+          listing.instance_exec model, &@field_description.proc
+        end
       else
-        name
+        field.value_for(model)
       end
     end
 
+    def searchable?
+      column_description.searchable?
+    end
+
+    def sortable?
+      listing.sortable? && column_description.sortable?
+    end
+
     def cell_css_class
-      @column_description.props[:class]
+      column_description.props[:class]
     end
 
     attr_accessor :sort
 
     def next_sort_direction
-      sort == 'asc' ? 'desc' : 'asc'
+      self.sort == Sources::DataSource::ASC ? Sources::DataSource::DESC : Sources::DataSource::ASC
     end
   end
 end
