@@ -157,6 +157,19 @@ Or
   end
 ```
 
+The block is evaluated in a view_context so any helper you will usually use in a view it can be used in the block
+
+```ruby
+  column do |track|
+    link_to 'Edit', edit_track_path(track)
+  end
+
+  column do |track|
+    # renders app/views/shared/_tracks_actions view
+    render partial: 'shared/track_actions', locals: {track: track}
+  end
+```
+
 `column` also accepts a `title:` option
 
 ```ruby
