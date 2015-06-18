@@ -10,8 +10,11 @@ module Listings
 
     def value_for(model)
       if @field_description.proc
-        # TODO should pass @field.value_for(model) to simplify formatting
-        listing.instance_exec model, &@field_description.proc
+        if is_field?
+          listing.instance_exec model, field.value_for(model), &@field_description.proc
+        else
+          listing.instance_exec model, &@field_description.proc
+        end
       else
         field.value_for(model)
       end

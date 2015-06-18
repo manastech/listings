@@ -9,7 +9,10 @@ class TracksListing < Listings::Base
 
   column :order
   column :title, searchable: true
-  column album: :name, searchable: true
+  column album: :name, searchable: true do |track, album_name|
+    "#{album_name} (Buy!)"
+  end
+
   column album: :id, title: 'The Album Id'
 
 end
