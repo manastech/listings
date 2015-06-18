@@ -19,7 +19,11 @@ module Listings::Sources
 
     def items
       if @items.is_a?(Class)
-        @items.scoped
+        if Rails::VERSION::MAJOR == 3
+          @items.scoped
+        else
+          @items.all
+        end
       else
         @items
       end
