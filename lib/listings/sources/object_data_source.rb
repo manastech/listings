@@ -44,7 +44,7 @@ module Listings::Sources
     end
 
     def build_field(path)
-      path = self.sanitaize_path(path)
+      path = self.class.sanitaize_path(path)
       unless path.is_a?(Array)
         path = [path]
       end

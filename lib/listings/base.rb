@@ -97,7 +97,7 @@ module Listings
       end
 
       if params.include?(param_sort_by)
-        sort_col = column_with_name(params[param_sort_by])
+        sort_col = column_with_key(params[param_sort_by])
         sort_col.sort = params[param_sort_direction]
         data_source.sort(sort_col.field, params[param_sort_direction])
       end
@@ -143,8 +143,8 @@ module Listings
       column.value_for(self, item)
     end
 
-    def column_with_name(name)
-      self.columns.find { |c| c.name.to_s == name.to_s }
+    def column_with_key(key)
+      self.columns.find { |c| c.key == key }
     end
 
     def filter_with_key(key)

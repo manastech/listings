@@ -66,7 +66,7 @@ module Listings::Sources
     end
 
     def build_field(path)
-      path = self.sanitaize_path(path)
+      path = self.class.sanitaize_path(path)
       if path.is_a?(Array)
         ActiveRecordAssociationField.new(path, self)
       else

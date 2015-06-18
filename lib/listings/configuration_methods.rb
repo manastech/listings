@@ -1,4 +1,6 @@
 require 'listings/scope_descriptor'
+require 'listings/base_field_descriptor'
+require 'listings/base_field_view'
 require 'listings/column_descriptor'
 require 'listings/column_view'
 require 'listings/filter_descriptor'
@@ -100,7 +102,7 @@ module Listings
       end
 
       def column(name = '', props = {}, &proc)
-        columns << ColumnDescriptor.new(self, name, props, proc)
+        columns << ColumnDescriptor.new(name, props, proc)
       end
 
       def selectable #(column = :id)
@@ -139,7 +141,7 @@ module Listings
       end
 
       def filter(path)
-        filters << FilterDescriptor.new(self, path)
+        filters << FilterDescriptor.new(path)
       end
     end
   end

@@ -48,7 +48,7 @@ module Listings::Sources
       raise "Unable to create datasource for #{model}"
     end
 
-    def sanitaize_path(path)
+    def self.sanitaize_path(path)
       if path.is_a?(Array)
         path
       elsif path.is_a?(Hash) && path.size == 1
