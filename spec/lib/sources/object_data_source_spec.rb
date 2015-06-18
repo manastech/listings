@@ -36,8 +36,13 @@ RSpec.describe ObjectDataSource do
         before(:each) {
           add_tracks build(:object_track, album: nil)
         }
+
         it "should deal with intermediate nils" do
           expect(album_name.value_for(ds.items.first)).to be_nil
+        end
+
+        it "should have key" do
+          expect(album_name.key).to eq('album_name')
         end
       end
 

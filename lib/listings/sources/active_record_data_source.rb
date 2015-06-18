@@ -109,6 +109,10 @@ module Listings::Sources
     def sort(items, direction)
       items.reorder("#{query_column} #{direction}")
     end
+
+    def key
+      @attribute_name.to_s
+    end
   end
 
   class ActiveRecordAssociationField < Field
@@ -138,6 +142,10 @@ module Listings::Sources
 
     def sort(items, direction)
       items.reorder("#{query_column} #{direction}")
+    end
+
+    def key
+      @path.join('_')
     end
   end
 end

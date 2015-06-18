@@ -7,6 +7,10 @@ module RSpec::ListingsHelpers
     def listing_full_url(*options)
       "/"
     end
+
+    def listing_content_url(*options)
+      "/"
+    end
   end
 
   def query_listing(name)

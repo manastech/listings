@@ -79,5 +79,9 @@ module Listings::Sources
         end
       end
     end
+
+    def key
+      @path.join('_')
+    end
   end
 end

@@ -69,5 +69,8 @@ module Listings::Sources
     # returns this field over the item
     def value_for(item)
     end
+
+    def key
+    end
   end
 end

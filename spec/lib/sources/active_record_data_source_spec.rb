@@ -69,6 +69,10 @@ RSpec.describe ActiveRecordDataSource do
         it "should project attribute value" do
           expect(title.value_for(ds.items.first)).to eq(posts.first.title)
         end
+
+        it "should have key" do
+          expect(title.key).to eq('title')
+        end
       end
 
       describe "scope" do
@@ -209,8 +213,14 @@ RSpec.describe ActiveRecordDataSource do
     let!(:track_title) { ds.build_field :title }
 
     shared_examples "listing with projected values" do
-      it "should project attribute value" do
-        expect(album_name.value_for(ds.items.first)).to eq(Track.first.album.name)
+      describe "projected field" do
+        it "should project attribute value" do
+          expect(album_name.value_for(ds.items.first)).to eq(Track.first.album.name)
+        end
+
+        it "should have key" do
+          expect(album_name.key).to eq('album_name')
+        end
       end
 
       it "should deal with intermediate nils" do

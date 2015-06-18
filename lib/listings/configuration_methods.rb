@@ -1,6 +1,8 @@
 require 'listings/scope_descriptor'
 require 'listings/column_descriptor'
 require 'listings/column_view'
+require 'listings/filter_descriptor'
+require 'listings/filter_view'
 
 module Listings
   module ConfigurationMethods
@@ -11,7 +13,6 @@ module Listings
       attr_accessor :scope
       attr_accessor :search
       attr_accessor :page_size
-      attr_accessor :filter_values
 
       def scopes
         @scopes ||= self.class.process_scopes
@@ -49,7 +50,9 @@ module Listings
       end
 
       def filters
-        self.class.filters
+        @filters ||= self.class.filters.map do |fd|
+          FilterView.new(self, fd)
+        end
       end
     end
 
@@ -81,7 +84,6 @@ module Listings
         end
         @scopes = scopes.select{ |s| !s.deferred? }
       end
-
 
       def model(model_class = nil, &proc)
         if !model_class.nil?
@@ -136,8 +138,8 @@ module Listings
         @filters ||= []
       end
 
-      def filter name
-        filters << name
+      def filter(path)
+        filters << FilterDescriptor.new(self, path)
       end
     end
   end

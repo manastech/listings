@@ -39,7 +39,7 @@ module Listings
         self.search_filters = {}
       else
         # otherwise parse the search stripping out allowed filterable fields
-        self.search_filters, self.search_criteria = parse_filter(self.search, self.filters)
+        self.search_filters, self.search_criteria = parse_filter(self.search, self.filters.map(&:key))
       end
     end
 
@@ -68,13 +68,7 @@ module Listings
 
     def filter_items(params)
       columns # prepare columns
-
-      filter_fields = {}
-      if filterable?
-        filters.each do |v|
-          filter_fields[v] = data_source.build_field(v)
-        end
-      end
+      filters # prepare filters
 
       self.page = params[param_page] || 1
       self.scope = scope_by_name(params[param_scope])
@@ -93,13 +87,12 @@ module Listings
       end
 
       if filterable?
-        self.filter_values = {}
-        filters.each do |v|
-          self.filter_values[v] = data_source.values_for_filter(filter_fields[v])
+        filters.each do |filter_view|
+          filter_view.values # prepare values
         end
 
         self.search_filters.each do |key, filter_value|
-          data_source.filter(filter_fields[key], filter_value)
+          data_source.filter(filter_with_key(key).field, filter_value)
         end
       end
 
@@ -152,6 +145,10 @@ module Listings
 
     def column_with_name(name)
       self.columns.find { |c| c.name.to_s == name.to_s }
+    end
+
+    def filter_with_key(key)
+      self.filters.find { |c| c.key == key }
     end
 
     def searchable?
