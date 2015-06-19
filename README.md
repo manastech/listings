@@ -46,6 +46,16 @@ Rails.application.routes.draw do
 end
 ```
 
+Require assets in your Javascript and Stylesheet
+
+```
+//= require listings
+```
+
+```
+ *= require listings
+```
+
 Create `config/initializers/listings.rb` file to make general configurations. Listings plays nice with twitter bootstrap 2 & 3 without explicitly including it.
 
 ```ruby
