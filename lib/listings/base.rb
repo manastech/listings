@@ -53,9 +53,9 @@ module Listings
     end
 
     def collect_filter(text, filter, filters_hash)
-      ["#{filter}:\s*(\\w+)",
-       "#{filter}:\s*\"([^\"]+)\"",
-       "#{filter}:\s*\'([^\']+)\'"].each do |pattern|
+      ["#{filter}:\s*\"([^\"]+)\"",
+       "#{filter}:\s*\'([^\']+)\'",
+       "#{filter}:\s*(\\S+)"].each do |pattern|
         m = Regexp.new(pattern, Regexp::IGNORECASE).match(text)
         if m
           filters_hash[filter] = m[1]

@@ -26,6 +26,8 @@ describe Listings do
 
     assert_parse_filter "album_name:me", {album_name: "me"}, ""
     assert_parse_filter "album_name:'me 2' ", {album_name: "me 2"}, ""
+
+    assert_parse_filter "album_name:me-1", {album_name: "me-1"}, ""
   end
 
   def assert_parse_filter(text, hash, left_text)
