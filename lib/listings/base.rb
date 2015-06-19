@@ -1,5 +1,6 @@
 require 'listings/configuration_methods'
 require 'listings/view_helper_methods'
+require 'listings/filters/base'
 require 'csv'
 
 module Listings

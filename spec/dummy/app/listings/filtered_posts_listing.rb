@@ -4,6 +4,8 @@ class FilteredPostsListing < Listings::Base
 
   paginates_per 10
 
+  layout filters: :top
+
   scope :all, default: true
   scope :even
   scope :odd
