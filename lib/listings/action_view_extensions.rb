@@ -8,6 +8,16 @@ module Listings
       render :partial => 'listings/listing', :locals => { :listing => listing }
     end
 
+    def listings_partial_render(view, listing, options = {})
+      prefix = [
+        "listings/#{listing.name}",
+        "listings/#{listing.theme}",
+        "listings"
+      ].select { |p| lookup_context.exists?("#{p}/_#{view}") }.first
+
+      render "#{prefix}/#{view}", options.merge(listing: listing)
+    end
+
     def prepare_listing(params, view_context, paging = true)
       params.delete :controller
       params.delete :action

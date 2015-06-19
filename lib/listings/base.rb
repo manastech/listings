@@ -209,12 +209,16 @@ module Listings
     end
 
     def kaminari_theme
-      case Listings.configuration.theme
+      case theme
       when 'twitter-bootstrap-2'
         'twitter-bootstrap'
       else
-        Listings.configuration.theme
+        theme
       end
+    end
+
+    def theme
+      Listings.configuration.theme
     end
   end
 end

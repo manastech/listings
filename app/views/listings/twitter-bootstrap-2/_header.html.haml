@@ -1,0 +1,14 @@
+.navbar
+  .navbar-inner
+    %ul.nav.nav-pills
+      - listing.scopes.each do |scope|
+        %li{class: "#{'active' if listing.is_active_scope(scope)}"}
+          = link_to scope.human_name, listing.url_for_scope(scope), :remote => true, class: 'scope_link'
+    - if listing.searchable? || listing.filterable?
+      %form.navbar-search.pull-right{:action => listings.listing_content_url(listing.name), :'data-remote' => true}
+        - listing.scoped_params.each do |key,value|
+          %input{type: 'hidden', name: key, value: value}
+        %input.search-query.ls-search-field{type: 'text', name: listing.param_search, value: listing.scoped_params[listing.param_search], placeholder: listing.search_placeholder}
+    - if listing.render_filters_at?(:top)
+      %ul.nav.pull-right
+        = listings_partial_render 'top_filters', listing

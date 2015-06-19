@@ -2,7 +2,7 @@
 var selected_items = {};
 
 $(function(){
-  var search_query = '.search-query';
+  var search_query = '.ls-search-field';
   var batchSelectionLastStatus = {};
 
   $('.listing').each(function(){
