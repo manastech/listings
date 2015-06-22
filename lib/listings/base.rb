@@ -113,13 +113,8 @@ module Listings
     def query_items(params)
       @params = params
       @data_source = Sources::DataSource.for(self.model_class)
-      @has_active_model_source = items.respond_to? :human_attribute_name
 
       filter_items(self.scoped_params)
-    end
-
-    def has_active_model_source?
-      @has_active_model_source
     end
 
     def selectable?
