@@ -112,7 +112,9 @@ module Listings
 
     def query_items(params)
       @params = params
-      @data_source = Sources::DataSource.for(self.model_class)
+
+      @data_source = self.model_class
+      @data_source = Sources::DataSource.for(@data_source) unless @data_source.is_a?(Sources::DataSource)
 
       filter_items(self.scoped_params)
     end

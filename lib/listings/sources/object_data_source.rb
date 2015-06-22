@@ -55,7 +55,11 @@ module Listings::Sources
   class DataSource
     class << self
       def for_with_object(model)
-        ObjectDataSource.new(model)
+        if model.is_a?(Array) # TODO Enumerable
+          ObjectDataSource.new(model)
+        else
+          for_without_object(model)
+        end
       end
 
       alias_method_chain :for, :object
