@@ -1,4 +1,4 @@
-jQuery("#<%=@listing.name%> .listings-table-content").html("<%= escape_javascript(render :partial => 'listings/table_content', :locals => { :listing => @listing }) %>");
+jQuery("#<%=@listing.name%> .listings-table-content").html("<%= escape_javascript(listings_partial_render('table_content', @listing)) %>");
 jQuery("#<%=@listing.name%>.listing").data('url', "<%= raw @listing.url %>")
   .data('search', <%= raw @listing.search_data.to_json %>);
 

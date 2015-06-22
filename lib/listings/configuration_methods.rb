@@ -51,6 +51,10 @@ module Listings
         self.class.row_style_applicator.call item if self.class.row_style_applicator
       end
 
+      def layout_options
+        self.class.layout_options
+      end
+
       def filters
         @filters ||= self.class.filters.map do |fd|
           FilterView.new(self, fd)
@@ -156,6 +160,14 @@ module Listings
       def filter(path = '', props = {}, &proc)
         path, props = fix_path_props(path, props)
         filters << FilterDescriptor.new(path, props, proc)
+      end
+
+      def layout(props = {})
+        @layout_options = props
+      end
+
+      def layout_options
+        (@layout_options || {}).reverse_merge! filters: :side
       end
     end
   end

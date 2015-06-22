@@ -2,7 +2,7 @@
 var selected_items = {};
 
 $(function(){
-  var search_query = '.search-query';
+  var search_query = '.ls-search-field';
   var batchSelectionLastStatus = {};
 
   $('.listing').each(function(){
@@ -117,7 +117,7 @@ $(function(){
     });
   }
 
-  $('.listing').on('click', '.filter a', function(e) {
+  $('.listing').on('click', 'a.filter, .filter a', function(e) {
     elem = $(this);
     var listingElement = elem.closest('.listing');
     clearSelectedItems(listingElement);
@@ -141,7 +141,8 @@ $(function(){
 
     var search_data = listingElement.data('search');
     for(key in search_data.filters) {
-      listingElement.find('.filter a[data-key=' + searchEscape(key) + '][data-value=' + searchEscape(search_data.filters[key]) + ']').parent().addClass('active');
+      var filerLinkSelector = 'a[data-key=' + searchEscape(key) + '][data-value=' + searchEscape(search_data.filters[key]) + ']';
+      listingElement.find(filerLinkSelector).closest('.filter').addClass('active');
     }
 
   });

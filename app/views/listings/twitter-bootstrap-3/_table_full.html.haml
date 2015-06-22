@@ -1,0 +1,12 @@
+.row-fluid
+  %div{:class => listing.render_filters_at?(:side) ? 'col-md-10' : 'col-md-12'}
+    - if !listing.scopes.empty? || listing.searchable? || listing.filterable?
+      .row-fluid
+        .col-md-12
+          = listings_partial_render 'header', listing
+    .row-fluid
+      .col-md-12
+        = listings_partial_render 'table_content', listing
+  - if listing.render_filters_at?(:side)
+    .col-md-2
+      = listings_partial_render 'side_filters', listing

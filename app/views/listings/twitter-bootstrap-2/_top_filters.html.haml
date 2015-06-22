@@ -1,11 +1,11 @@
-.filters
-  - listing.filters.each do |filter_view|
-    %ul.nav.nav-list.well
-      %li.nav-header
-        = "Filter by #{filter_view.human_name}"
+- listing.filters.each do |filter_view|
+  %li.dropdown.pull-right
+    %a.dropdown-toggle(data-toggle="dropdown" href="#")
+      = filter_view.human_name
+      %b.caret
+    %ul.dropdown-menu
       - filter_view.values.each do |value|
         %li.filter
           %a{:href => '#', :'data-key' => filter_view.key, :'data-value' => value}
             = filter_view.value_for(value)
             %i.icon-remove
-

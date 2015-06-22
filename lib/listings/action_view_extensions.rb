@@ -5,7 +5,17 @@ module Listings
       options.reverse_merge! :params => {}
       params_for_listing = {:listing => key}.merge(params).merge(options[:params]).with_indifferent_access
       listing = prepare_listing(params_for_listing, self)
-      render :partial => 'listings/listing', :locals => { :listing => listing }
+      listings_partial_render 'listing', listing
+    end
+
+    def listings_partial_render(view, listing, options = {})
+      prefix = [
+        "listings/#{listing.name}",
+        "listings/#{listing.theme}",
+        "listings"
+      ].select { |p| lookup_context.exists?("#{p}/_#{view}") }.first
+
+      render "#{prefix}/#{view}", options.merge(listing: listing)
     end
 
     def prepare_listing(params, view_context, paging = true)

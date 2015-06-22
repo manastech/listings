@@ -1,5 +1,5 @@
 .listing{:id => listing.name, :'data-url' => listing.url, :'data-search' => listing.search_data.to_json }
-  = render 'listings/table_full', :listing => listing
+  = listings_partial_render 'table_full', listing
 
 :javascript
   $(function() {
