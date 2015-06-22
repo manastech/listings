@@ -8,7 +8,7 @@ travis = ENV["TRAVIS"] || "false"
 rails_version = ENV["RAILS_VERSION"] || "default"
 rails = case rails_version
 when "default"
-  "~> 3.2.13"
+  nil
 else
   "~> #{rails_version}"
 end
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.description = "Simple creation of listings in rails applications."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
-  s.test_files = Dir["{test,spec}/**/*"]
+  s.test_files = Dir["{test,spec}/**/*"] - Dir["{test,spec}/dummy/tmp/**/*"]
 
   s.add_dependency "rails", rails
   s.add_dependency 'haml-rails'
