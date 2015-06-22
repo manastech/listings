@@ -1,4 +1,6 @@
-module Listings::Sources
+module Listings
+  module Sources
+  end
 end
 
 require 'listings/sources/data_source'
