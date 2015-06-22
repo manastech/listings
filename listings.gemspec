@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.description = "Simple creation of listings in rails applications."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
-  s.test_files = Dir["{test,spec}/**/*"] - Dir["{test,spec}/dummy/tmp/**/*"]
+  s.test_files = Dir["{test,spec}/**/*"] - Dir["{test,spec}/dummy/tmp/**/*"] - Dir["{test,spec}/dummy/log/**/*"] - Dir["{test,spec}/dummy/db/*.sqlite3"]
 
   s.add_dependency "rails", rails
   s.add_dependency 'haml-rails'
