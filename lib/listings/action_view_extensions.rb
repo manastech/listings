@@ -5,7 +5,7 @@ module Listings
       options.reverse_merge! :params => {}
       params_for_listing = {:listing => key}.merge(params).merge(options[:params]).with_indifferent_access
       listing = prepare_listing(params_for_listing, self)
-      render :partial => 'listings/listing', :locals => { :listing => listing }
+      listings_partial_render 'listing', listing
     end
 
     def listings_partial_render(view, listing, options = {})
