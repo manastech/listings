@@ -23,6 +23,7 @@ A listing data source have built in support for ActiveRecord and Arrays.
       * [export](#export)
       * [css](#css)
     * [i18n](#i18n)
+    * [Templates](#templates)
     * [Javascript api](#javascript-api)
     * [Under the hood](#under-the-hood)
     * [License](#license)
@@ -240,6 +241,12 @@ It supports `title:` and a block
   end
 ```
 
+Filters are rendered by default by the side of the listing. With `layout` method you can change this and render them on the top.
+
+```ruby
+  layout filters: :top
+```
+
 ### paginates_per
 
 Page size can be specified by `paginates_per`
@@ -328,6 +335,21 @@ use
 ```javascript
 refreshListing('tracks')
 ```
+
+## Templates
+
+There are a number of templates involved in rendering the listing. These templates can be rendered by the hosting app per listing or theme basis.
+
+For example if a listing named `tracks` is rendered with `twitter-bootstrap-3` theme the templates are looked up in the following locations/order:
+
+ * `<app>/views/listings/twitter-bootstrap-3/<partial>`
+ * `<gem>/views/listings/twitter-bootstrap-3/<partial>`
+ * `<app>/views/listings/tracks/<partial>`
+ * `<gem>/views/listings/tracks/<partial>`
+ * `<app>/views/listings/<partial>`
+ * `<gem>/views/listings/<partial>`
+
+This lookup logic is inside `Listings::ActionViewExtensions#listings_partial_render`.
 
 ## Under the hood
 
