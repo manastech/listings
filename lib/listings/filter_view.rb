@@ -17,7 +17,7 @@ module Listings
     end
 
     def render?
-      true
+      @field_description.props.fetch(:render, true)
     end
 
     def apply_filter(value)

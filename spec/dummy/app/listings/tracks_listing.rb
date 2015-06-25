@@ -6,6 +6,7 @@ class TracksListing < Listings::Base
   filter album: :id, title: 'The Album Id' do |value|
     "#{value}!"
   end
+  filter :order, render: false
 
   custom_filter :order_lte do |items, value|
     items.where('"order" <= ?', value.to_i)
