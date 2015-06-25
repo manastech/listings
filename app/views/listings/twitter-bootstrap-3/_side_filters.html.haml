@@ -1,5 +1,5 @@
 .filters.list-group
-  - listing.filters.reverse.each do |filter_view|
+  - listing.filters_to_render.reverse.each do |filter_view|
     %a.list-group-item.disabled(href="#")
       = "Filter by #{filter_view.human_name}"
     - filter_view.values.each do |value|

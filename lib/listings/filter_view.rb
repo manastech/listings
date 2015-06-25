@@ -15,5 +15,13 @@ module Listings
         value
       end
     end
+
+    def render?
+      true
+    end
+
+    def apply_filter(value)
+      listing.data_source.filter(field, value)
+    end
   end
 end

@@ -29,6 +29,10 @@ module Listings::Sources
       end
     end
 
+    def transform_items
+      @items = yield @items
+    end
+
     def scope
       @items = yield @items
       @items_for_filter = yield @items_for_filter

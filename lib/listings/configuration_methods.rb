@@ -5,6 +5,8 @@ require 'listings/column_descriptor'
 require 'listings/column_view'
 require 'listings/filter_descriptor'
 require 'listings/filter_view'
+require 'listings/custom_filter_descriptor'
+require 'listings/custom_filter_view'
 
 module Listings
   module ConfigurationMethods
@@ -57,7 +59,7 @@ module Listings
 
       def filters
         @filters ||= self.class.filters.map do |fd|
-          FilterView.new(self, fd)
+          fd.build(self)
         end
       end
     end
@@ -160,6 +162,10 @@ module Listings
       def filter(path = '', props = {}, &proc)
         path, props = fix_path_props(path, props)
         filters << FilterDescriptor.new(path, props, proc)
+      end
+
+      def custom_filter(key, &proc)
+        filters << CustomFilterDescriptor.new(key, proc)
       end
 
       def layout(props = {})

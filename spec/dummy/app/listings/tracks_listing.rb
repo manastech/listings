@@ -7,6 +7,10 @@ class TracksListing < Listings::Base
     "#{value}!"
   end
 
+  custom_filter :order_lte do |items, value|
+    items.where('"order" <= ?', value.to_i)
+  end
+
   column :order
   column :title, searchable: true
   column album: :name, searchable: true do |track, album_name|

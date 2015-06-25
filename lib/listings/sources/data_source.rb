@@ -8,6 +8,10 @@ module Listings::Sources
     def items
     end
 
+    # free transform items. used usually to filter the result with logic given by a block
+    def transform_items
+    end
+
     # applies filter to the items
     # scope will be called with a block with the ongoing items
     # the result of the block is used as the narrowed items

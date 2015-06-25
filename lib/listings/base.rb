@@ -88,12 +88,12 @@ module Listings
       end
 
       if filterable?
-        filters.each do |filter_view|
+        filters_to_render.each do |filter_view|
           filter_view.values # prepare values
         end
 
         self.search_filters.each do |key, filter_value|
-          data_source.filter(filter_with_key(key).field, filter_value)
+          filter_with_key(key).apply_filter(filter_value)
         end
       end
 
@@ -220,6 +220,10 @@ module Listings
 
     def export_filename(format)
       "#{kind.gsub(' ', '_')}_#{Time.now.to_s.gsub(' ', '_')}.#{format}"
+    end
+
+    def filters_to_render
+      filters.select { |f| f.render? }
     end
   end
 end

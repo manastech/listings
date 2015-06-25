@@ -9,6 +9,10 @@ module Listings::Sources
       @items
     end
 
+    def transform_items
+      @items = yield @items
+    end
+
     def paginate(page, page_size)
       @items = Kaminari.paginate_array(@items).page(page).per(page_size)
     end
