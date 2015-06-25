@@ -19,6 +19,8 @@ module Listings
         view_context.listings.listing_export_url build_params(:format => format)
       end
 
+      # TODO add url_for_filter that will build the search string
+
       def build_params(more_params)
         res = view_context.params.merge(:listing => self.name).merge(params).merge(more_params)
         res.delete param_page

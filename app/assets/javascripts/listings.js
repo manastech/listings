@@ -120,20 +120,15 @@ $(function(){
   $('.listing').on('click', 'a.filter, .filter a', function(e) {
     elem = $(this);
     var listingElement = elem.closest('.listing');
-    clearSelectedItems(listingElement);
-
     var key = elem.data('key');
     var value = elem.data('value');
 
     var search_data = listingElement.data('search');
     if (search_data.filters[key] == value) {
-      delete search_data.filters[key];
+      listingElement.trigger("listings:filter:key:clear", key)
     } else {
-      search_data.filters[key] = value;
+      listingElement.trigger("listings:filter:key:set", [key, value])
     }
-
-    listingElement.data('search', search_data);
-    updateListingFromSearchData(listingElement);
   }).on("listings:loaded", function(e){
     // highlight current filter
     var listingElement = $(this).closest('.listing');
@@ -145,6 +140,24 @@ $(function(){
       listingElement.find(filerLinkSelector).closest('.filter').addClass('active');
     }
 
+  }).on("listings:filter:key:set", function(event, key, value) {
+    var listingElement = $(this).closest('.listing');
+    clearSelectedItems(listingElement);
+
+    var search_data = listingElement.data('search');
+    search_data.filters[key] = value;
+    listingElement.data('search', search_data);
+
+    updateListingFromSearchData(listingElement);
+  }).on("listings:filter:key:clear", function(event, key) {
+    var listingElement = $(this).closest('.listing');
+    clearSelectedItems(listingElement);
+
+    var search_data = listingElement.data('search');
+    delete search_data.filters[key];
+    listingElement.data('search', search_data);
+
+    updateListingFromSearchData(listingElement);
   });
 
   function searchEscape(value) {

@@ -9,6 +9,9 @@ module Listings
       Kaminari::Helpers::Tag.paginate_with_listings(nil)
       res
     end
+
+    def listings_link_to_filter(text, key, value)
+      link_to text, '#', onclick: "$(this).closest('.listing').trigger('listings:filter:key:set', ['#{key}', '#{escape_javascript(value)}']);return false;"
     end
 
     def listings_partial_render(view, listing, options = {})
