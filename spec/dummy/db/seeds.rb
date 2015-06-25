@@ -5,7 +5,10 @@ require 'factory_girl'
   Post.create! title: "post n-#{sn}", author: "john-#{(sn % 4) + 1}", category: "category-#{(sn % 3) + 1}"
 end
 
-
 (1..10).each do |sn|
   FactoryGirl.create :album
+end
+
+(1..10).each do |sn|
+  FactoryGirl.create :track, album: nil
 end

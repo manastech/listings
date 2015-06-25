@@ -39,7 +39,7 @@ module Listings::Sources
     end
 
     def values_for_filter(field)
-      @items_for_filter.reorder(field.query_column).pluck("distinct #{field.query_column}").reject(&:nil?)
+      field.all_values(@items_for_filter)
     end
 
     def search(fields, value)
@@ -62,7 +62,6 @@ module Listings::Sources
 
     def joins(relation)
       @items = @items.eager_load(relation)
-      @items_for_filter = @items_for_filter.joins(relation)
     end
 
     def build_field(path)
@@ -89,10 +88,28 @@ module Listings::Sources
     end
   end
 
-  class ActiveRecordField < Field
+  class BaseActiveRecordField < Field
     delegate :connection, to: :data_source
     delegate :quote_table_name, :quote_column_name, to: :connection
 
+    def initialize(data_source)
+      super(data_source)
+    end
+
+    def all_values(items)
+      prepare_pluck(items).reorder(query_column).pluck("distinct #{query_column}").reject(&:nil?)
+    end
+
+    def prepare_pluck(items)
+      items
+    end
+
+    def sort(items, direction)
+      items.reorder("#{query_column} #{direction}")
+    end
+  end
+
+  class ActiveRecordField < BaseActiveRecordField
     def initialize(attribute_name, data_source)
       super(data_source)
       @attribute_name = attribute_name
@@ -106,10 +123,6 @@ module Listings::Sources
       "#{quote_table_name(data_source.items.table_name)}.#{quote_column_name(@attribute_name)}"
     end
 
-    def sort(items, direction)
-      items.reorder("#{query_column} #{direction}")
-    end
-
     def key
       @attribute_name.to_s
     end
@@ -119,15 +132,16 @@ module Listings::Sources
     end
   end
 
-  class ActiveRecordAssociationField < Field
-    delegate :connection, to: :data_source
-    delegate :quote_table_name, :quote_column_name, to: :connection
-
+  class ActiveRecordAssociationField < BaseActiveRecordField
     def initialize(path, data_source)
       super(data_source)
       @path = path
 
       data_source.joins(path[0])
+    end
+
+    def prepare_pluck(items)
+      items.joins(@path[0])
     end
 
     def value_for(item)
@@ -142,10 +156,6 @@ module Listings::Sources
     def query_column
       association = data_source.model_instance.association(@path[0])
       "#{quote_table_name(association.reflection.table_name)}.#{quote_column_name(@path[1])}"
-    end
-
-    def sort(items, direction)
-      items.reorder("#{query_column} #{direction}")
     end
 
     def key
