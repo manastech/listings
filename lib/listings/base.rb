@@ -217,5 +217,9 @@ module Listings
     def theme
       Listings.configuration.theme
     end
+
+    def export_filename(format)
+      "#{kind.gsub(' ', '_')}_#{Time.now.to_s.gsub(' ', '_')}.#{format}"
+    end
   end
 end

@@ -34,7 +34,7 @@
               = listing.export_message
             - listing.export_formats.each do |format|
               %li
-                = link_to format, listing.url_for_format(format)
+                = link_to format, listing.url_for_format(format), download: true
 
 
   - else

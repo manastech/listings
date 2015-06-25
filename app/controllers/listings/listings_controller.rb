@@ -16,8 +16,11 @@ module Listings
       @listing = prepare_listing params, view_context, false
 
       respond_to do |format|
-        format.csv { send_data @listing.to_csv, filename: "#{params[:listing]}.csv" }
-        format.xls { render 'listings/export' }
+        format.csv { send_data @listing.to_csv, filename: @listing.export_filename(:csv) }
+        format.xls do
+          headers["Content-Disposition"] = "attachment; filename=\"#{@listing.export_filename(:xls)}\""
+          render 'listings/export'
+        end
       end
     end
 
