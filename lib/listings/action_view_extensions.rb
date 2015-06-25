@@ -5,7 +5,10 @@ module Listings
       options.reverse_merge! :params => {}
       params_for_listing = {:listing => key}.merge(params).merge(options[:params]).with_indifferent_access
       listing = prepare_listing(params_for_listing, self)
-      listings_partial_render 'listing', listing
+      res = listings_partial_render 'listing', listing
+      Kaminari::Helpers::Tag.paginate_with_listings(nil)
+      res
+    end
     end
 
     def listings_partial_render(view, listing, options = {})
@@ -22,7 +25,7 @@ module Listings
       params.delete :controller
       params.delete :action
 
-      Kaminari::Helpers::Tag.listings = view_context.listings
+      Kaminari::Helpers::Tag.paginate_with_listings(view_context.listings)
 
       listing_class = lookup_listing_class(params[:listing])
       listing_class.new.tap do |listing|
