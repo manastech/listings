@@ -35,5 +35,9 @@ module Listings
     def is_field?
       @field_description.is_field?
     end
+
+    def descriptor
+      @field_description
+    end
   end
 end
