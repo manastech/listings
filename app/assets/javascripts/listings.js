@@ -129,6 +129,8 @@ $(function(){
     } else {
       listingElement.trigger("listings:filter:key:set", [key, value])
     }
+
+    e.preventDefault();
   }).on("listings:loaded", function(e){
     // highlight current filter
     var listingElement = $(this).closest('.listing');
@@ -140,11 +142,12 @@ $(function(){
       listingElement.find(filerLinkSelector).closest('.filter').addClass('active');
     }
 
-    if (listingElement.data('config').push_url) {
+    if (listingElement.data('config').push_url && listingElement.data('skip-push-url') !== true) {
+      listingElement.data('skip-push-url', false);
       var url = listingElement.data('url');
       var queryStringStart = url.indexOf('?');
       var queryString = queryStringStart == -1 ? '' : url.substring(queryStringStart);
-      history.pushState({}, document.title, location.href.split('?')[0] + queryString);
+      history.pushState({listing: '#' + listingElement.attr('id')}, document.title, location.href.split('?')[0] + queryString);
     }
 
   }).on("listings:filter:key:set", function(event, key, value) {
@@ -166,6 +169,14 @@ $(function(){
 
     updateListingFromSearchData(listingElement);
   });
+
+  window.onpopstate = function(event) {
+    if (event.state && event.state.listing) {
+      var listing = $(event.state.listing);
+      listing.data('skip-push-url', true);
+      $.get(listing.data('url').split('?')[0] + '?' + document.location.href.split('?')[1]);
+    }
+  };
 
   function searchEscape(value) {
     if (value.toString().indexOf(" ") == -1) {
