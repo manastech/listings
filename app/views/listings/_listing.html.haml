@@ -1,4 +1,4 @@
-.listing{:id => listing.name, :'data-url' => listing.url, :'data-search' => listing.search_data.to_json }
+.listing{:id => listing.name, :'data-url' => listing.url, :'data-search' => listing.search_data.to_json, :'data-config' => listing.client_config.to_json }
   = listings_partial_render 'table_full', listing
 
 :javascript

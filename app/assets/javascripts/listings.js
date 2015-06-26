@@ -140,6 +140,13 @@ $(function(){
       listingElement.find(filerLinkSelector).closest('.filter').addClass('active');
     }
 
+    if (listingElement.data('config').push_url) {
+      var url = listingElement.data('url');
+      var queryStringStart = url.indexOf('?');
+      var queryString = queryStringStart == -1 ? '' : url.substring(queryStringStart);
+      history.pushState({}, document.title, location.href.split('?')[0] + queryString);
+    }
+
   }).on("listings:filter:key:set", function(event, key, value) {
     var listingElement = $(this).closest('.listing');
     clearSelectedItems(listingElement);

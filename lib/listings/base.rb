@@ -225,5 +225,9 @@ module Listings
     def filters_to_render
       filters.select { |f| f.render? }
     end
+
+    def client_config
+      { push_url: Listings.configuration.push_url }
+    end
   end
 end
