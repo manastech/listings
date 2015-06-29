@@ -22,6 +22,7 @@ A listing data source have built in support for ActiveRecord and Arrays.
       * [paginates_per](#paginates_per)
       * [export](#export)
       * [css](#css)
+    * [Testing](#testing)
     * [i18n](#i18n)
     * [Templates](#templates)
     * [Javascript api](#javascript-api)
@@ -63,6 +64,7 @@ Create `config/initializers/listings.rb` file to make general configurations. Li
 # file: config/initializers/listings.rb
 Listings.configure do |config|
   config.theme = 'twitter-bootstrap-3' # defaults to 'twitter-bootstrap-2'
+  config.push_url = true # User html5 history push_state to allow back/forward navigation. defaults to false
 end
 ```
 
@@ -241,10 +243,24 @@ It supports `title:` and a block
   end
 ```
 
+Also `render:` option can be used to suppress the rendering of the filter, but allowing the user to filter by it. For example to filter by the id:
+
+```ruby
+  filter :id, render: false
+```
+
 Filters are rendered by default by the side of the listing. With `layout` method you can change this and render them on the top.
 
 ```ruby
   layout filters: :top
+```
+
+Custom filters allows definition of custom meaning to a key. This filters are not rendered.
+
+```ruby
+  custom_filter :order_lte do |items, value|
+    items.where('"order" <= ?', value.to_i)
+  end
 ```
 
 ### paginates_per
@@ -303,6 +319,32 @@ A `column` also support a `class` option to specify a css class to be applied on
   column :title, class: 'title-style'
 ```
 
+## Testing
+
+Include `listings/rspec` in your `spec_helper.rb`
+
+```ruby
+# file: spec/spec_helper.rb
+require 'listings/rspec'
+```
+
+Ensure listing is able to render
+
+```ruby
+# file: spec/listings/tracks_listing_spec.rb
+require 'spec_helper'
+
+RSpec.describe TracksListing, type: :listing do
+  let(:listing) { query_listing :tracks }
+
+  it 'should get tracks' do
+    # ... data setup ...
+    items = listing.items.to_a
+    # ... assert expected items ...
+  end
+end
+```
+
 ## i18n
 
 Although titles can be specified in the listing definition, i18n support is available. Add to your locales:
@@ -335,6 +377,30 @@ use
 ```javascript
 refreshListing('tracks')
 ```
+
+Change filters
+
+```
+$('#tracks.listings').trigger("listings:filter:key:clear", 'album_name')
+$('#tracks.listings').trigger("listings:filter:key:set", ['album_name', 'Best of'])
+```
+
+## View Helpers
+
+Use `render_listing` helper to include the listing by its `name`.
+
+```
+= render_listing :tracks
+```
+
+Use `listings_link_to_filter` helper to render a link that will set a filter. Used to example when you want the user to be able to click on a cell value to filter upon that.
+
+```ruby
+  column artist: :name do |album, value|
+    listings_link_to_filter(value, :artist_id, album.artist_id)
+  end
+```
+
 
 ## Templates
 
