@@ -28,12 +28,18 @@ describe Listings do
     assert_parse_filter "album_name:'me 2' ", {album_name: "me 2"}, ""
 
     assert_parse_filter "album_name:me-1", {album_name: "me-1"}, ""
+
+    assert_parse_filter_with_keys "project_id:3", [:id, :project_id], {project_id:"3"}, ""
   end
 
   def assert_parse_filter(text, hash, left_text)
+    assert_parse_filter_with_keys(text, hash.keys, hash, left_text)
+  end
+
+  def assert_parse_filter_with_keys(text, keys, hash, left_text)
     listing = Listings::Base.new
 
-    filters, s = listing.parse_filter text, hash.keys
+    filters, s = listing.parse_filter text, keys
 
     s.should eq(left_text)
     filters.should eq(hash)

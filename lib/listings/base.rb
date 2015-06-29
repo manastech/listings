@@ -46,7 +46,7 @@ module Listings
 
     def parse_filter(text, filter_keys)
       filters = {}
-      filter_keys.each do |key|
+      filter_keys.sort_by {|k| -k.length }.each do |key|
         text = collect_filter text, key, filters
       end
 
