@@ -1,0 +1,7 @@
+%a.list-group-item.disabled(href="#")
+  = "Filter by #{filter.human_name}"
+- filter.values.each do |value|
+  %a.list-group-item.filter{:href => '#', :'data-key' => filter.key, :'data-value' => value}
+    = filter.value_for(value)
+    %span.icon-remove
+      &times;

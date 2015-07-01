@@ -164,8 +164,8 @@ module Listings
         filters << FilterDescriptor.new(path, props, proc)
       end
 
-      def custom_filter(key, &proc)
-        filters << CustomFilterDescriptor.new(key, proc)
+      def custom_filter(key, props = {}, &proc)
+        filters << CustomFilterDescriptor.new(key, props, proc)
       end
 
       def layout(props = {})

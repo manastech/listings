@@ -1,0 +1,10 @@
+%li.dropdown
+  %a.dropdown-toggle(data-toggle="dropdown" href="#")
+    = filter.human_name
+    %span.caret
+  %ul.dropdown-menu
+    - filter.values.each do |value|
+      %li.filter
+        %a{:href => '#', :'data-key' => filter.key, :'data-value' => value}
+          = filter.value_for(value)
+          %i.icon-remove

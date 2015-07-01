@@ -22,3 +22,18 @@
 //     console.log(el);
 //   });
 // });
+
+$(function(){
+
+  $('.listing').on('change', '#date-filter', function(){
+    var listings = $(this).closest('.listing')
+    var filter = $(this);
+
+    if (filter.val() == '') {
+      listings.trigger("listings:filter:key:clear", filter.data('filter-key'))
+    } else {
+      listings.trigger("listings:filter:key:set", [filter.data('filter-key'), filter.val()])
+    }
+  });
+});
+

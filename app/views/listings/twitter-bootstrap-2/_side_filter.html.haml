@@ -1,0 +1,8 @@
+%ul.nav.nav-list.well
+  %li.nav-header
+    = "Filter by #{filter.human_name}"
+  - filter.values.each do |value|
+    %li.filter
+      %a{:href => '#', :'data-key' => filter.key, :'data-value' => value}
+        = filter.value_for(value)
+        %i.icon-remove

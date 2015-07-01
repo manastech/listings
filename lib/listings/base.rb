@@ -89,7 +89,7 @@ module Listings
 
       if filterable?
         filters_to_render.each do |filter_view|
-          filter_view.values # prepare values
+          filter_view.prepare_values
         end
 
         self.search_filters.each do |key, filter_value|

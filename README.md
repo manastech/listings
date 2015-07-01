@@ -249,13 +249,20 @@ Also `render:` option can be used to suppress the rendering of the filter, but a
   filter :id, render: false
 ```
 
+Or `render:` can be user to indicate the partial to be used for rendering that filter. Hence allowing custom UI for certain filter among the default UI. See [Templates](#templates) for information regarding where the partial will be looked.
+
+```ruby
+  filter :update_at, render: 'date'
+```
+
+
 Filters are rendered by default by the side of the listing. With `layout` method you can change this and render them on the top.
 
 ```ruby
   layout filters: :top
 ```
 
-Custom filters allows definition of custom meaning to a key. This filters are not rendered.
+Custom filters allows definition of custom meaning to a key. This filters are not rendered by default. Use `render:` option to indicate the partial to be used for rendering.
 
 ```ruby
   custom_filter :order_lte do |items, value|
@@ -408,10 +415,10 @@ There are a number of templates involved in rendering the listing. These templat
 
 For example if a listing named `tracks` is rendered with `twitter-bootstrap-3` theme the templates are looked up in the following locations/order:
 
- * `<app>/views/listings/twitter-bootstrap-3/<partial>`
- * `<gem>/views/listings/twitter-bootstrap-3/<partial>`
  * `<app>/views/listings/tracks/<partial>`
  * `<gem>/views/listings/tracks/<partial>`
+ * `<app>/views/listings/twitter-bootstrap-3/<partial>`
+ * `<gem>/views/listings/twitter-bootstrap-3/<partial>`
  * `<app>/views/listings/<partial>`
  * `<gem>/views/listings/<partial>`
 

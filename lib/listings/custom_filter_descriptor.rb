@@ -1,10 +1,12 @@
 module Listings
   class CustomFilterDescriptor
     attr_reader :key
+    attr_reader :props
     attr_reader :proc
 
-    def initialize(key, proc)
+    def initialize(key, props, proc)
       @key = key
+      @props = props
       @proc = proc
     end
 
