@@ -1,15 +1,27 @@
 module RSpec::ListingsHelpers
   class FakeRoutes
-    def listing_full_path(*options)
-      "/"
-    end
+    # def listing_full_path(*options)
+    #   "/"
+    # end
 
-    def listing_full_url(*options)
-      "/"
-    end
+    # def listing_full_url(*options)
+    #   "/"
+    # end
 
-    def listing_content_url(*options)
-      "/"
+    # def listing_content_url(*options)
+    #   "/"
+    # end
+
+    # def listing_export_url(*options)
+    #   "/"
+    # end
+
+    def method_missing(m, *args, &block)
+      if m.to_s.end_with?("_url") || m.to_s.end_with?("_path")
+        "/"
+      else
+        super
+      end
     end
   end
 
@@ -29,6 +41,10 @@ module RSpec::ListingsHelpers
 
     context.class.send(:define_method, 'listings') do
       FakeRoutes.new
+    end
+
+    context.class.send(:define_method, 'main_app') do
+      FakeRoutes.new # routes of the main_app
     end
 
     context
