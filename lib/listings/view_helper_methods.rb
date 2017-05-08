@@ -26,7 +26,7 @@ module Listings
         res.delete param_page
         res.delete :controller
         res.delete :action
-        res.with_indifferent_access
+        Rails::VERSION::MAJOR < 5 ? res.with_indifferent_access : res.to_unsafe_h
       end
 
       def no_data_message

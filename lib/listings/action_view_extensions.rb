@@ -3,7 +3,8 @@ module Listings
   module ActionViewExtensions
     def render_listing(key, options = {})
       options.reverse_merge! :params => {}
-      params_for_listing = {:listing => key}.merge(params).merge(options[:params]).with_indifferent_access
+      _params = Rails::VERSION::MAJOR < 5 ? params : params.to_unsafe_h
+      params_for_listing = {:listing => key}.merge(_params).merge(options[:params]).with_indifferent_access
       listing = prepare_listing(params_for_listing, self)
       res = listings_partial_render 'listing', listing
       Kaminari::Helpers::Tag.paginate_with_listings(nil)
