@@ -9,9 +9,10 @@ module Kaminari
         Thread.current[:listings]
       end
 
+      alias_method :page_url_for_without_listing, :page_url_for
       # patch kaminari helpers
       # passing options of mountable engine routes seems to not be working
-      def page_url_for_with_listing(page)
+      def page_url_for(page)
         if Kaminari::Helpers::Tag.listings_to_paginate_with
           @params.delete :page
           params = {@param_name => page}.merge(@params).with_indifferent_access
@@ -22,8 +23,6 @@ module Kaminari
           page_url_for_without_listing(page)
         end
       end
-
-      alias_method_chain :page_url_for, :listing
     end
   end
 end
