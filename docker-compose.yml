@@ -1,0 +1,36 @@
+version: '2.0'
+
+services:
+  ruby24rails502:
+    image: ruby:2.4
+    environment:
+      RAILS_VERSION: 5.0.2
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      SECRET_KEY_BASE: secret
+    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    volumes:
+      - bundle24:/usr/local/bundle
+      - .:/src
+
+  ruby21rails421:
+    image: ruby:2.1
+    environment:
+      RAILS_VERSION: 4.2.1
+    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    volumes:
+      - bundle21:/usr/local/bundle
+      - .:/src
+
+  ruby193rails32:
+    image: zedtux/ruby-1.9.3
+    environment:
+      RAILS_VERSION: 3.2.0
+    command: bash -c "apt-get update && apt-get install -y build-essential libsqlite3-dev && cd /src && rm -rf bin/ Gemfile.lock && gem install bundler && bundle install && rake test"
+    volumes:
+      - bundle19:/usr/local/bundle
+      - .:/src
+
+volumes:
+  bundle24:
+  bundle21:
+  bundle19:
