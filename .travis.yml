@@ -1,10 +1,27 @@
 language: ruby
+sudo: required
 rvm:
   - 1.9.3
-  - 2.0.0
+  - 2.1.0
+  - 2.4.0
 env:
-  - "RAILS_VERSION=3.2"
-  - "RAILS_VERSION=4.2.1"
+  global:
+    - DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    - SECRET_KEY_BASE=secret
+  matrix:
+    - RAILS_VERSION=3.2
+    - RAILS_VERSION=4.2.1
+    - RAILS_VERSION=5.0.2
+matrix:
+  exclude:
+  - rvm: 2.4.0
+    env: RAILS_VERSION=3.2
+  - rvm: 1.9.3
+    env: RAILS_VERSION=4.2.1
+  - rvm: 1.9.3
+    env: RAILS_VERSION=5.0.2
+  - rvm: 2.1.0
+    env: RAILS_VERSION=5.0.2
 gemfile:
   - listings.gemfile
 before_script:
