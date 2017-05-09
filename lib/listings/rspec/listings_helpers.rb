@@ -36,7 +36,12 @@ module RSpec::ListingsHelpers
 
   def fake_context
     controller = ActionController::Base.new
-    controller.request = ActionController::TestRequest.new(:host => "http://test.com")
+
+    controller.request = if Rails::VERSION::MAJOR < 5
+      ActionController::TestRequest.new(:host => "http://test.com")
+    else
+      ActionController::TestRequest.create
+    end
     context = controller.view_context
 
     context.class.send(:define_method, 'listings') do
