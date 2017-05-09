@@ -26,7 +26,7 @@
     %ul.nav.clearfix
       - if listing.paginated?
         %li.pull-left
-          = paginate listing.items, :remote => true, :theme => listing.kaminari_theme, :params => listing.params, :remote => true
+          = paginate listing.items, :theme => listing.kaminari_theme, :params => listing.params, :remote => true
       - unless listing.export_formats.empty?
         %li.pull-right
           %ul.inline.list-inline
