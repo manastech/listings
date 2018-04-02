@@ -1,6 +1,17 @@
 version: '2.0'
 
 services:
+  ruby25rails515:
+    image: ruby:2.5
+    environment:
+      RAILS_VERSION: 5.1.5
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      SECRET_KEY_BASE: secret
+    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    volumes:
+      - bundle25:/usr/local/bundle
+      - .:/src
+
   ruby24rails502:
     image: ruby:2.4
     environment:
@@ -31,6 +42,7 @@ services:
       - .:/src
 
 volumes:
+  bundle25:
   bundle24:
   bundle21:
   bundle19:

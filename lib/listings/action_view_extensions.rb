@@ -38,7 +38,7 @@ module Listings
         if !paging
           listing.page_size = :none
         end
-        listing.query_items(params)
+        listing.query_items(params.respond_to?(:to_unsafe_h) ? params.to_unsafe_h : params)
       end
     end
 

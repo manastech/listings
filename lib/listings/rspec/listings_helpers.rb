@@ -40,7 +40,11 @@ module RSpec::ListingsHelpers
     controller.request = if Rails::VERSION::MAJOR < 5
       ActionController::TestRequest.new(:host => "http://test.com")
     else
-      ActionController::TestRequest.create
+      if Rails::VERSION::MINOR >= 1 # ~> 5.1
+        ActionController::TestRequest.create(controller.class)
+      else
+        ActionController::TestRequest.create
+      end
     end
     context = controller.view_context
 

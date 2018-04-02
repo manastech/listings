@@ -22,11 +22,19 @@ module Listings
       # TODO add url_for_filter that will build the search string
 
       def build_params(more_params)
-        res = view_context.params.merge(:listing => self.name).merge(params).merge(more_params)
+        res = _to_unsafe_h(view_context.params).merge(:listing => self.name).merge(_to_unsafe_h(params)).merge(more_params)
         res.delete param_page
         res.delete :controller
         res.delete :action
-        Rails::VERSION::MAJOR < 5 ? res.with_indifferent_access : res.to_unsafe_h
+        _to_unsafe_h(res).with_indifferent_access
+      end
+
+      def _to_unsafe_h(hsh)
+        if hsh.respond_to?(:to_unsafe_h)
+          hsh.to_unsafe_h
+        else
+          hsh
+        end
       end
 
       def no_data_message
