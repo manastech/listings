@@ -22,8 +22,6 @@ matrix:
     env: RAILS_VERSION=5.0.2
   - rvm: 2.1.0
     env: RAILS_VERSION=5.0.2
-gemfile:
-  - listings.gemfile
 before_script:
   - bundle install
 script:
