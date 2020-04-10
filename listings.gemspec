@@ -6,11 +6,13 @@ require "listings/version"
 travis = ENV["TRAVIS"] || "false"
 
 rails_version = ENV["RAILS_VERSION"] || "default"
-rails = case rails_version
+case rails_version
 when "default"
-  nil
+  rails = nil
+  sqlite3 = nil
 else
-  "~> #{rails_version}"
+  rails = "~> #{rails_version}"
+  sqlite3 = "~> 1.3.5"
 end
 
 # Describe your gem and declare its dependencies:
@@ -33,7 +35,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-kaminari-views'
   # s.add_dependency "jquery-rails"
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "sqlite3", sqlite3
+  s.add_development_dependency 'test-unit', '~> 3.0' if rails_version == "3.2.22"
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'factory_girl_rails'
 

@@ -3,7 +3,7 @@ sudo: required
 rvm:
   - 1.9.3
   - 2.1.0
-  - 2.4.0
+  - 2.5.0
 env:
   global:
     - DISABLE_DATABASE_ENVIRONMENT_CHECK=1
@@ -14,7 +14,7 @@ env:
     - RAILS_VERSION=5.0.2
 matrix:
   exclude:
-  - rvm: 2.4.0
+  - rvm: 2.5.0
     env: RAILS_VERSION=3.2
   - rvm: 1.9.3
     env: RAILS_VERSION=4.2.1

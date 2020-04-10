@@ -9,18 +9,27 @@ services:
       SECRET_KEY_BASE: secret
     command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
     volumes:
-      - bundle25:/usr/local/bundle
+      - bundle25a:/usr/local/bundle
       - .:/src
 
-  ruby24rails502:
-    image: ruby:2.4
+  ruby25rails502:
+    image: ruby:2.5
     environment:
       RAILS_VERSION: 5.0.2
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       SECRET_KEY_BASE: secret
     command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
     volumes:
-      - bundle24:/usr/local/bundle
+      - bundle25b:/usr/local/bundle
+      - .:/src
+
+  ruby23rails32:
+    image: ruby:2.3.8
+    environment:
+      RAILS_VERSION: 3.2.22
+    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    volumes:
+      - bundle23:/usr/local/bundle
       - .:/src
 
   ruby21rails421:
@@ -42,7 +51,8 @@ services:
       - .:/src
 
 volumes:
-  bundle25:
-  bundle24:
+  bundle25a:
+  bundle25b:
+  bundle23:
   bundle21:
   bundle19:
