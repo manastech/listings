@@ -9,7 +9,13 @@ module Listings
     end
 
     def values
-      @values ||= listing.data_source.values_for_filter(field)
+      @values ||= begin
+        if method = @field_description.props[:values]
+          listing.send(method)
+        else
+          listing.data_source.values_for_filter(field)
+        end
+      end
     end
 
     def value_for(value)

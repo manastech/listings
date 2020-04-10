@@ -243,6 +243,18 @@ It supports `title:` and a block
   end
 ```
 
+A `values: :method` can be specified to avoid the select distinct over the values.
+
+```ruby
+  filter album: :name, values: :all_album_names, title: 'Album' do |album_name|
+    album_name.titleize
+  end
+
+  def all_album_names
+    Album.order("name").pluck("distinct name").reject(&:nil?)
+  end
+```
+
 Also `render:` option can be used to suppress the rendering of the filter, but allowing the user to filter by it. For example to filter by the id:
 
 ```ruby

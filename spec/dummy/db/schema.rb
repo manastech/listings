@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20150611185922) do
     t.string   "title"
     t.integer  "order"
     t.integer  "album_id"
+    t.string   "label"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

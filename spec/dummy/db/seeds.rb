@@ -9,6 +9,8 @@ end
   FactoryGirl.create :album
 end
 
+LABELS = %w(Green Red Blue)
+
 (1..10).each do |sn|
-  FactoryGirl.create :track, album: nil
+  FactoryGirl.create :track, album: nil, label: LABELS[sn % LABELS.size]
 end
