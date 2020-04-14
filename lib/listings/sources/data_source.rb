@@ -45,7 +45,7 @@ module Listings::Sources
     end
 
     # returns a +Field+ for the specified options
-    def build_field(path)
+    def build_field(path, props)
     end
 
     def self.for(model)

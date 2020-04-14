@@ -68,12 +68,12 @@ module Listings::Sources
       @items = @items.eager_load(relation)
     end
 
-    def build_field(path)
+    def build_field(path, props)
       path = self.class.sanitaize_path(path)
       if path.is_a?(Array)
         ActiveRecordAssociationField.new(path, self)
       else
-        ActiveRecordField.new(path, self)
+        ActiveRecordField.new(path, self, props[:query_column])
       end
     end
   end
@@ -113,9 +113,10 @@ module Listings::Sources
   end
 
   class ActiveRecordField < BaseActiveRecordField
-    def initialize(attribute_name, data_source)
+    def initialize(attribute_name, data_source, query_column)
       super(data_source)
       @attribute_name = attribute_name
+      @query_column = query_column
     end
 
     def value_for(item)
@@ -123,7 +124,7 @@ module Listings::Sources
     end
 
     def query_column
-      "#{quote_table_name(data_source.items.table_name)}.#{quote_column_name(@attribute_name)}"
+      @query_column || "#{quote_table_name(data_source.items.table_name)}.#{quote_column_name(@attribute_name)}"
     end
 
     def key
