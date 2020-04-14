@@ -23,9 +23,9 @@
 //   });
 // });
 
-$(function(){
+$(function () {
 
-  $('.listing').on('change', '#date-filter', function(){
+  $('.listing').on('change', '#date-filter', function () {
     var listings = $(this).closest('.listing')
     var filter = $(this);
 
