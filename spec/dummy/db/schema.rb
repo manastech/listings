@@ -19,11 +19,18 @@ ActiveRecord::Schema.define(:version => 20150611185922) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "authors", :force => true do |t|
+    t.string   "name"
+    t.string   "category"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "posts", :force => true do |t|
     t.string   "title"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.text     "author"
+    t.integer  "author_id"
     t.string   "category"
   end
 
@@ -37,5 +44,6 @@ ActiveRecord::Schema.define(:version => 20150611185922) do
   end
 
   add_index "tracks", ["album_id"], :name => "index_tracks_on_album_id"
+  add_index "posts", ["author_id"], :name => "index_posts_on_author_id"
 
 end

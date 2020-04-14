@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :post do
-    title
+  factory :author do
+    name
   end
 end
