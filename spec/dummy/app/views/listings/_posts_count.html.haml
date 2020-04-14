@@ -1,0 +1,5 @@
+%ul.nav.nav-list.well
+  %li.nav-header
+    = "Filter by #{filter.key}"
+    - (1..20).each do |value|
+      %a#posts-count-filter{:'data-filter-key' => filter.key, :'data-filter-value' => value, :href => '#'}= value

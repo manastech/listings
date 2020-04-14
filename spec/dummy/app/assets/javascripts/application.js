@@ -35,5 +35,17 @@ $(function () {
       listings.trigger("listings:filter:key:set", [filter.data('filter-key'), filter.val()])
     }
   });
+
+  $('.listing').on('click', '#posts-count-filter', function () {
+    var listings = $(this).closest('.listing')
+    var filter = $(this);
+    var value = filter.data('filter-value');
+
+    if (value == '') {
+      listings.trigger("listings:filter:key:clear", filter.data('filter-key'))
+    } else {
+      listings.trigger("listings:filter:key:set", [filter.data('filter-key'), value])
+    }
+  });
 });
 

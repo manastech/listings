@@ -8,6 +8,10 @@ class AuthorsListing < Listings::Base
 
   filter :category, values: :categories
 
+  custom_filter :posts_count_eq, render: 'posts_count' do |items, value|
+    items.where("(select count(*) from posts where posts.author_id = authors.id) = ?", value.to_i)
+  end
+
   def categories
     Author.select('distinct category').pluck(:category).reject(&:nil?)
   end
