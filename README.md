@@ -207,6 +207,14 @@ The block is evaluated in a view_context so any helper you will usually use in a
   column album: :name, title: 'Album'
 ```
 
+> **computed columns**
+>
+> Listings will try to sort and filter by default using the `<table_name>.<column_name>` field of the query, on computed queries this will not work, you will need to use `column :my_computed_field, query_column: :my_computed_field` to allow sorting and filtering.
+>
+> Using computed columns might cause some issues depending on the Kaminari version used. If this is the case and you need to filter based on a computed filed, you will need to define a `custom_filter` to apply the filtering of the computed field.
+>
+> See example at [spec/dummy/app/listings/authors_listing.rb](spec/dummy/app/listings/authors_listing.rb)
+
 ### scope
 
 Declaring a `scope` with a symbol with allow user to show only records matching the scope in the ActiveRecord class
