@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get 'filtered'
     end
   end
+  get 'authors', to: 'welcome#authors'
 
   get 'array', to: 'welcome#array'
   get 'hash', to: 'welcome#hash'

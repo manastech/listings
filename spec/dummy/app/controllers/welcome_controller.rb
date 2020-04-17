@@ -10,4 +10,7 @@ class WelcomeController < ApplicationController
 
   def tracks
   end
+
+  def authors
+  end
 end

@@ -47,7 +47,7 @@ module Listings::Sources
       end
     end
 
-    def build_field(path)
+    def build_field(path, props)
       path = self.class.sanitaize_path(path)
       unless path.is_a?(Array)
         path = [path]

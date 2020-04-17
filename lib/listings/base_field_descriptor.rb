@@ -11,7 +11,7 @@ module Listings
     end
 
     def build_field(listing)
-      listing.data_source.build_field(path)
+      listing.data_source.build_field(path, props)
     end
 
     def is_field?

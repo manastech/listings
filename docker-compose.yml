@@ -7,7 +7,8 @@ services:
       RAILS_VERSION: 5.1.5
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       SECRET_KEY_BASE: secret
-    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    working_dir: /src
+    command: bash -c "rm -rf bin/ Gemfile.lock && bundle install && rake test"
     volumes:
       - bundle25a:/usr/local/bundle
       - .:/src
@@ -18,7 +19,8 @@ services:
       RAILS_VERSION: 5.0.2
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       SECRET_KEY_BASE: secret
-    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    working_dir: /src
+    command: bash -c "rm -rf bin/ Gemfile.lock && bundle install && rake test"
     volumes:
       - bundle25b:/usr/local/bundle
       - .:/src
@@ -27,7 +29,8 @@ services:
     image: ruby:2.3.8
     environment:
       RAILS_VERSION: 3.2.22
-    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    working_dir: /src
+    command: bash -c "rm -rf bin/ Gemfile.lock && bundle install && rake test"
     volumes:
       - bundle23:/usr/local/bundle
       - .:/src
@@ -36,7 +39,8 @@ services:
     image: ruby:2.1
     environment:
       RAILS_VERSION: 4.2.1
-    command: bash -c "cd /src && rm -rf bin/ Gemfile.lock && bundle install && rake test"
+    working_dir: /src
+    command: bash -c "rm -rf bin/ Gemfile.lock && bundle install && rake test"
     volumes:
       - bundle21:/usr/local/bundle
       - .:/src
@@ -45,7 +49,8 @@ services:
     image: zedtux/ruby-1.9.3
     environment:
       RAILS_VERSION: 3.2.0
-    command: bash -c "apt-get update && apt-get install -y build-essential libsqlite3-dev && cd /src && rm -rf bin/ Gemfile.lock && gem install bundler && bundle install && rake test"
+    working_dir: /src
+    command: bash -c "apt-get update && apt-get install -y build-essential libsqlite3-dev && rm -rf bin/ Gemfile.lock && gem install bundler && bundle install && rake test"
     volumes:
       - bundle19:/usr/local/bundle
       - .:/src
