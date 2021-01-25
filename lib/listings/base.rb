@@ -177,32 +177,27 @@ module Listings
       (params[:format] || :html).to_sym
     end
 
-    def to_array
-      data = []
-
-      data << self.columns.map { |c| c.human_name }
-
-      self.items.each do |item|
-        row = []
-        self.columns.each do |col|
-          row << col.value_for(item)
-        end
-        data << row
-      end
-
-      data
-    end
-
-    def to_csv
-      CSV.generate do |csv|
-        self.to_array.each do |row|
-          csv << row
-        end
-      end
-    end
-
     def send_csv(controller)
-      controller.send_data self.to_csv, filename: self.export_filename(:csv)
+      csv_filename = self.export_filename(:csv)
+
+      controller.headers["X-Accel-Buffering"] = "no"
+      controller.headers["Cache-Control"] = "no-cache"
+      controller.headers["Content-Type"] = "text/csv; charset=utf-8"
+      controller.headers["Content-Disposition"] = %(attachment; filename="#{csv_filename}")
+      controller.headers["Transfer-Encoding"] = "chunked"
+      controller.headers.delete("Content-Length")
+
+      controller.response_body = Enumerator.new do |lines|
+        lines << self.columns.map { |c| c.human_name }.to_csv
+
+        self.items.find_each do |item|
+          row = []
+          self.columns.each do |col|
+            row << col.value_for(item)
+          end
+          lines << row.to_csv
+        end
+      end
     end
 
     def method_missing(m, *args, &block)
