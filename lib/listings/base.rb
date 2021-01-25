@@ -201,6 +201,10 @@ module Listings
       end
     end
 
+    def send_csv(controller)
+      controller.send_data self.to_csv, filename: self.export_filename(:csv)
+    end
+
     def method_missing(m, *args, &block)
       view_context.send(m, *args, &block)
     end
