@@ -11,7 +11,7 @@
           <Cell><Data ss:Type="String"><%= col.human_name %></Data></Cell>
         <% end %>
       </Row>
-    <% @listing.items.each do |item| %>
+    <% @listing.export_each do |item| %>
       <Row>
         <% @listing.columns.each do |col| %>
           <% col.value_for(item).tap do |value| %>

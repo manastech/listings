@@ -177,6 +177,12 @@ module Listings
       (params[:format] || :html).to_sym
     end
 
+    def export_each
+      self.items.each do |item|
+        yield item
+      end
+    end
+
     def send_csv(controller)
       csv_filename = self.export_filename(:csv)
 
@@ -190,7 +196,7 @@ module Listings
       controller.response_body = Enumerator.new do |lines|
         lines << self.columns.map { |c| c.human_name }.to_csv
 
-        self.items.find_each do |item|
+        self.export_each do |item|
           row = []
           self.columns.each do |col|
             row << col.value_for(item)
@@ -198,6 +204,11 @@ module Listings
           lines << row.to_csv
         end
       end
+    end
+
+    def send_xls(controller)
+      controller.headers["Content-Disposition"] = %(attachment; filename="#{self.export_filename(:xls)}")
+      controller.render 'listings/export'
     end
 
     def method_missing(m, *args, &block)

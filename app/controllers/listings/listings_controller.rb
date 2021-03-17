@@ -21,10 +21,7 @@ module Listings
 
       respond_to do |format|
         format.csv { @listing.send_csv(self) }
-        format.xls do
-          headers["Content-Disposition"] = "attachment; filename=\"#{@listing.export_filename(:xls)}\""
-          render 'listings/export'
-        end
+        format.xls { @listing.send_xls(self) }
       end
     ensure
       Kaminari::Helpers::Tag.paginate_with_listings(nil)
